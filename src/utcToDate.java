@@ -16,7 +16,8 @@ public class utcToDate {
     public utcToDate() throws SQLException {
         this.filePath = "jdbc:sqlite::memory:";
         this.base_time1 = "SELECT strftime('";
-        this.base_time2 = "',(datetime(13252054032565471 / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime')))";
+        //this.base_time2 = "',(datetime(13280513345203383 / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime')))";
+        this.base_time2 = "',(datetime(13279655249000000 / 1000000 + (strftime('%s', '1601-01-01')), 'unixepoch', 'localtime')))";
         StartConnection();
     }
 
@@ -30,6 +31,14 @@ public class utcToDate {
 
         this.connect = DriverManager.getConnection(this.filePath);
         this.stmt = this.connect.createStatement();
+    }
+
+    public long nowDateLong() throws SQLException {
+        ResultSet rs = this.stmt.executeQuery("SELECT strftime('%s','now');");
+        rs.next();
+        long ret = rs.getLong(1);
+
+        return ret;
     }
 
     public ArrayList<String[]> makeOrder(String format) throws SQLException {
