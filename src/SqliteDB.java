@@ -69,6 +69,7 @@ public class SqliteDB {
 
     public ArrayList<String[]> DefaultTable(String table_name) throws SQLException {
         String sql = "SELECT * FROM " + table_name;
+//        String sql = "SELECT * FROM " + table_name + " LIMIT 10;";
 
         return SQLResult(sql);
     }
