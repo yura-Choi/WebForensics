@@ -72,9 +72,33 @@ public class RecordDAO {
         }
         Connection con = DriverManager.getConnection("jdbc:sqlite::memory:");
         Statement stmte = con.createStatement();
-        ResultSet rs = stmte.executeQuery("SELECT strftime('%s','now');");
+        ResultSet rs = stmte.executeQuery("SELECT strftime('%s','now', 'localtime');");
         rs.next();
         long ret = rs.getLong(1);
+
+        rs.close();
+        stmte.close();
+        con.close();
+
+        return ret;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        System.out.println(datetoDefault(Long.toString(nowDateLong())));
+    }
+
+    public static String datetoDefault(String date) throws SQLException {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        }
+        catch(ClassNotFoundException e)  {
+            System.out.println("org.sqlite.JDBC를 찾지못했습니다.");
+        }
+        Connection con = DriverManager.getConnection("jdbc:sqlite::memory:");
+        Statement stmte = con.createStatement();
+        ResultSet rs = stmte.executeQuery("SELECT datetime("+ date +", 'unixepoch')");
+        rs.next();
+        String ret = rs.getString(1);
 
         rs.close();
         stmte.close();
