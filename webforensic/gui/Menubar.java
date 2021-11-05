@@ -82,27 +82,7 @@ public class Menubar extends JMenuBar {
 
                 JOptionPane.showConfirmDialog(null, openChooser.getSelectedFile() + " Opend", "Success !",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
-                /*
-                do{
-                    numberTerms++;
-                    myLine = inputFile.readLine();
-                    term1[numberTerms - 1] = parseLeft(myLine);
-                    term2[numberTerms - 1] = parseRight(myLine);
-                } while(inputFile.ready() && numberTerms < 100);
-                if(numberTerms < 5){
-                    JOptionPane.showConfirmDialog(null, "Must have at least 5 entries in exam file.", "Exam File Error",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                 */
 
-                // inputFile.close();
-
-
-                /*
-                startButton.setEnabled(true);
-                optionsMenu.setEnabled(true);
-                 */
             }
             catch (Exception ex){
                 JOptionPane.showConfirmDialog(null, "Error reading in input file - make sure file is correct format",
