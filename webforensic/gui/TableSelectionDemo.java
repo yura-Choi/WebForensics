@@ -43,15 +43,15 @@ public class TableSelectionDemo extends JPanel {
 
         // Toolbar
         JToolBar mainToolBar = new JToolBar();
-        JButton optionButton = new JButton(new ImageIcon("./src/webforensic/resources/option.png"));
-        JButton saveButton = new JButton(new ImageIcon("./src/webforensic/resources/save.png"));
-        JButton deleteButton = new JButton(new ImageIcon("./src/webforensic/resources/delete.png"));
-        JButton refreshButton = new JButton(new ImageIcon("./src/webforensic/resources/refresh.png"));
-        JButton copyButton = new JButton(new ImageIcon("./src/webforensic/resources/copy.png"));
-        JButton propertiesButton = new JButton(new ImageIcon("./src/webforensic/resources/properties.png"));
-        JButton findButton = new JButton(new ImageIcon("./src/webforensic/resources/find.png"));
-        JButton qrcodeButton = new JButton(new ImageIcon("./src/webforensic/resources/qrcode.png"));
-        JButton exitButton = new JButton(new ImageIcon("./src/webforensic/resources/exit.png"));
+        JButton optionButton = new JButton(new ImageIcon("./webforensic/resources/option.png"));
+        JButton saveButton = new JButton(new ImageIcon("./webforensic/resources/save.png"));
+        JButton deleteButton = new JButton(new ImageIcon("./webforensic/resources/delete.png"));
+        JButton refreshButton = new JButton(new ImageIcon("./webforensic/resources/refresh.png"));
+        JButton copyButton = new JButton(new ImageIcon("./webforensic/resources/copy.png"));
+        JButton propertiesButton = new JButton(new ImageIcon("./webforensic/resources/properties.png"));
+        JButton findButton = new JButton(new ImageIcon("./webforensic/resources/find.png"));
+        JButton qrcodeButton = new JButton(new ImageIcon("./webforensic/resources/qrcode.png"));
+        JButton exitButton = new JButton(new ImageIcon("./webforensic/resources/exit.png"));
 
         mainToolBar.setFloatable(false);
         mainToolBar.setBackground(Color.WHITE);
