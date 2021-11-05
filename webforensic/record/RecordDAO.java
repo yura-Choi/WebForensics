@@ -53,6 +53,7 @@ public class RecordDAO {
         return records;
     }
 
+    //현재 시간 - day 한 크롬 날짜를 반환합니다
     public static String subDays(int day) throws SQLException {
         long before = 11644473600L;
         long now = Long.valueOf(nowDateString());
@@ -67,7 +68,7 @@ public class RecordDAO {
 //        System.out.println(datetoDefault(String.valueOf(chromeToUNIX(13315125879249347L))));
 //    }
 
-    //현재 시간을
+    //현재 시간을 유닉스 시간으로 반환힙니다
     public static String nowDateString() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -88,6 +89,7 @@ public class RecordDAO {
         return ret;
     }
 
+    //날짜를 국룰 시간으로 반환합니다
     public static String datetoDefault(String date) throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -108,6 +110,7 @@ public class RecordDAO {
         return ret;
     }
 
+    //크롬시간을 유닉스 시간으로 바꿔줍니다
     public static String chromeToUNIX(String chrome) {
         long c = Long.valueOf(chrome);
         String ret = String.valueOf(c/1000000L - 11644473600L);
