@@ -28,7 +28,7 @@ public class RecordDAO {
 //        }
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history";
 //        String url = "jdbc:sqlite:" + "history";
-
+//sadfsadfasdfsadfsadfasf
 
         //db 드라이버 로딩
         try {
