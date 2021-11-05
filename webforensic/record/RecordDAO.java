@@ -1,4 +1,4 @@
-package webforensic.record;
+package record;
 
 import java.sql.*;
 import java.util.ArrayList;

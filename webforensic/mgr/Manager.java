@@ -1,4 +1,4 @@
-package webforensic.mgr;
+package mgr;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,7 +59,8 @@ public class Manager {
     public Scanner openFile(String filename){
         Scanner filein = null;
         try {
-            filein = new Scanner(new File("./src/webforensic/record/"+filename));
+            System.out.println(System.getProperty("user.dir")+"\\webforensic\\record\\"+filename);
+            filein = new Scanner(new File(".\\webforensic\\record\\"+filename));
         } catch(Exception e){
             System.out.println(filename + ": 파일 없음");
             System.exit(0);

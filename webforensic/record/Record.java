@@ -1,7 +1,7 @@
-package webforensic.record;
+package record;
 
-import webforensic.facade.UIData;
-import webforensic.mgr.Manageable;
+import facade.UIData;
+import mgr.Manageable;
 
 import java.util.Scanner;
 

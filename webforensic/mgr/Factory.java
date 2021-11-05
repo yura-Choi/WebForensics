@@ -1,4 +1,4 @@
-package webforensic.mgr;
+package mgr;
 
 public interface Factory {
     Manageable create();

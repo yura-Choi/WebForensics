@@ -1,4 +1,4 @@
-package webforensic.record;
+package record;
 
 import javax.swing.table.AbstractTableModel;
 import java.sql.SQLException;

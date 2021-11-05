@@ -1,4 +1,4 @@
-package webforensic.mgr;
+package mgr;
 
 import java.util.Scanner;
 

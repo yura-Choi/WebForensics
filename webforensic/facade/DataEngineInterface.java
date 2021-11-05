@@ -1,6 +1,6 @@
-package webforensic.facade;
+package facade;
 
-import webforensic.mgr.Manageable;
+import mgr.Manageable;
 import java.util.List;
 
 public interface DataEngineInterface {

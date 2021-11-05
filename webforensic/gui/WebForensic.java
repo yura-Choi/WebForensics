@@ -1,4 +1,4 @@
-package webforensic.gui;
+package gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +43,7 @@ public class WebForensic extends JFrame {
             {"김영희", "100", "99", "100"},
             {"김철수", "30", "25", "9"},
     };
+
 
     JTable table = new JTable(contents, header);
     JScrollPane scrollPane = new JScrollPane(table);

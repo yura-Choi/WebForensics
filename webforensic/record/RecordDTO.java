@@ -1,4 +1,4 @@
-package webforensic.record;
+package record;
 
 public class RecordDTO {
     private String id;
