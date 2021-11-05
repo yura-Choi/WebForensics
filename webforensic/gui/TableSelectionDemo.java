@@ -43,6 +43,7 @@ public class TableSelectionDemo extends JPanel {
 
         // Toolbar
         JToolBar mainToolBar = new JToolBar();
+        System.out.println();
         JButton optionButton = new JButton(new ImageIcon("./src/webforensic/resources/option.png"));
         JButton saveButton = new JButton(new ImageIcon("./src/webforensic/resources/save.png"));
         JButton deleteButton = new JButton(new ImageIcon("./src/webforensic/resources/delete.png"));
