@@ -60,4 +60,11 @@ public class utcToDate {
         return result;
     }
 
+    public long nowDateLong() throws SQLException {
+        ResultSet rs = this.stmt.executeQuery("SELECT strftime('%s','now');");
+        rs.next();
+        long ret = rs.getLong(1);
+        return ret;
+    }
+
 }

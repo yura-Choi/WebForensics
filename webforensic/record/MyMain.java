@@ -8,7 +8,7 @@ public class MyMain {
         RecordMgr engine = new RecordMgr();
         engine.readAll("record.txt");
         GUIMain.startGUI(engine);
-    }//yuuy
+    }
 
     public static void main(String args[]){
         MyMain a = new MyMain();
