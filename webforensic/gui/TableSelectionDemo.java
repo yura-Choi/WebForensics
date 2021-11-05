@@ -1,6 +1,5 @@
 package gui;
 
-
 import record.RecordTableModel;
 
 import javax.swing.*;
@@ -21,11 +20,23 @@ public class TableSelectionDemo extends JPanel {
         table = new JTable();
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
+
         try{
             table.setModel(new RecordTableModel(10));
         } catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
         }
+
+        table.setShowGrid(false);
+        //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        table.getColumnModel().getColumn(0).setPreferredWidth(10);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(10);
+        table.getColumnModel().getColumn(4).setPreferredWidth(10);
+        table.getColumnModel().getColumn(5).setPreferredWidth(200);
+        table.getColumnModel().getColumn(6).setPreferredWidth(10);
+        table.getTableHeader().setReorderingAllowed(false);
 
         bottom = new BottomPane();
         bottom.init(table.getRowCount());
