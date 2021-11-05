@@ -1,13 +1,9 @@
 package gui;
 
-import facade.DataEngineInterface;
-
 import javax.swing.*;
 
 public class GUIMain {
-    static DataEngineInterface engine;
-    public static void startGUI(DataEngineInterface en){
-        engine = en;
+    public static void startGUI(){
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

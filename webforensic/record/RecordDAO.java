@@ -13,22 +13,10 @@ public class RecordDAO {
 
     public ArrayList<RecordDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
         //db 연결 정보
-//        try {
-//            FileInputStream fis = new FileInputStream(System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history");
-//            FileOutputStream fos = new FileOutputStream("history");
-//
-//            int data = 0;
-//            while((data = fis.read()) != -1){
-//                fos.write(data);
-//            }
-//            fis.close();
-//            fos.close();
-//        }catch (IOException e){
-//            System.out.println(e);
-//        }
+
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history";
-//        String url = "jdbc:sqlite:" + "history";
-//sadfsadf
+//      String url = "jdbc:sqlite:" + "history";
+
 
         //db 드라이버 로딩
         try {

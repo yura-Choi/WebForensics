@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 public class TableSelectionDemo extends JPanel {
     private static final long serialVersionUID = 1L;
-    //static TableController tableController;
     private JTable table;
     static BottomPane bottom;
     public TableSelectionDemo(){
@@ -19,9 +18,6 @@ public class TableSelectionDemo extends JPanel {
     }
 
     void addComponentToPane(){
-      //  tableController = new TableController();
-      //  tableController.init();
-      //  JScrollPane center = new JScrollPane(tableController.table);
         table = new JTable();
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
@@ -32,7 +28,7 @@ public class TableSelectionDemo extends JPanel {
         }
 
         bottom = new BottomPane();
-        bottom.init(GUIMain.engine.getColumnCount());
+        bottom.init(table.getRowCount());
         bottom.setBackground(Color.WHITE);
         add(bottom, BorderLayout.PAGE_END);
 
