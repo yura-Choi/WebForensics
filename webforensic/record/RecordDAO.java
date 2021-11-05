@@ -67,7 +67,8 @@ public class RecordDAO {
 //        System.out.println(datetoDefault(String.valueOf(chromeToUNIX(13315125879249347L))));
 //    }
 
-    public static Long nowDateLong() throws SQLException {
+    //현재 시간을
+    public static String nowDateLong() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
         }
@@ -78,7 +79,7 @@ public class RecordDAO {
         Statement stmte = con.createStatement();
         ResultSet rs = stmte.executeQuery("SELECT strftime('%s','now', 'localtime');");
         rs.next();
-        long ret = rs.getLong(1);
+        String ret = rs.getString(1);
 
         rs.close();
         stmte.close();
@@ -107,8 +108,9 @@ public class RecordDAO {
         return ret;
     }
 
-    public static long chromeToUNIX(long chrome) {
-        long ret = chrome/1000000L - 11644473600L;
+    public static String chromeToUNIX(String chrome) {
+        long c = Long.valueOf(chrome);
+        String ret = String.valueOf(c/1000000L - 11644473600L);
         return ret;
     }
 }
