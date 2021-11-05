@@ -8,6 +8,7 @@ public class RecordTableModel extends AbstractTableModel {
     private String[] columnNames = {"id", "url", "title", "visit_count", "typed_count", "last_visit_time", "hidden"};
     private ArrayList<RecordDTO> records;
 
+
     public RecordTableModel(int period) throws ClassNotFoundException, SQLException{
         RecordDAO dao = new RecordDAO();
         records = dao.searchRecord(period);
