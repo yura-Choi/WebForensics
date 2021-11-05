@@ -63,6 +63,10 @@ public class RecordDAO {
         return String.valueOf(sum);
     }
 
+//    public static void main(String[] args ) throws SQLException {
+//        System.out.println(datetoDefault(String.valueOf(chromeToUNIX(13315125879249347L))));
+//    }
+
     public static Long nowDateLong() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -83,10 +87,6 @@ public class RecordDAO {
         return ret;
     }
 
-    public static void main(String[] args) throws SQLException {
-        System.out.println(datetoDefault(Long.toString(nowDateLong())));
-    }
-
     public static String datetoDefault(String date) throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -104,6 +104,11 @@ public class RecordDAO {
         stmte.close();
         con.close();
 
+        return ret;
+    }
+
+    public static long chromeToUNIX(long chrome) {
+        long ret = chrome/1000000L - 11644473600L;
         return ret;
     }
 }
