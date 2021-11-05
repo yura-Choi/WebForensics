@@ -1,8 +1,5 @@
 package record;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -54,5 +51,35 @@ public class RecordDAO {
         }
 
         return records;
+    }
+
+    public static String subDays(int day) throws SQLException {
+        long before = 11644473600L;
+        long now = nowDateLong();
+        now = (now+before)*1000000L;
+        long sub = day*24*60*60*1000000L;
+        long sum = now-(sub);
+
+        return String.valueOf(sum);
+    }
+
+    public static Long nowDateLong() throws SQLException {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        }
+        catch(ClassNotFoundException e)  {
+            System.out.println("org.sqlite.JDBC를 찾지못했습니다.");
+        }
+        Connection con = DriverManager.getConnection("jdbc:sqlite::memory:");
+        Statement stmte = con.createStatement();
+        ResultSet rs = stmte.executeQuery("SELECT strftime('%s','now');");
+        rs.next();
+        long ret = rs.getLong(1);
+
+        rs.close();
+        stmte.close();
+        con.close();
+
+        return ret;
     }
 }
