@@ -55,7 +55,7 @@ public class RecordDAO {
 
     public static String subDays(int day) throws SQLException {
         long before = 11644473600L;
-        long now = nowDateLong();
+        long now = Long.valueOf(nowDateString());
         now = (now+before)*1000000L;
         long sub = day*24*60*60*1000000L;
         long sum = now-(sub);
@@ -68,7 +68,7 @@ public class RecordDAO {
 //    }
 
     //현재 시간을
-    public static String nowDateLong() throws SQLException {
+    public static String nowDateString() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
         }
