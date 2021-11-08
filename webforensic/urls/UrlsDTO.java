@@ -1,6 +1,8 @@
-package record;
+package urls;
 
-public class RecordDTO {
+import java.util.ArrayList;
+
+public class UrlsDTO {
     private String id;
     private String url;
     private String title;
@@ -9,7 +11,7 @@ public class RecordDTO {
     private String last_visit_time;
     private String hidden;
 
-    public RecordDTO(){
+    public UrlsDTO(){
     }
 
     public String getId(){
@@ -67,4 +69,7 @@ public class RecordDTO {
     public void setHidden(String hidden){
         this.hidden = hidden;
     }
+
+
+
 }

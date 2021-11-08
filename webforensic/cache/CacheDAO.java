@@ -17,7 +17,8 @@ public class CacheDAO {
     public ArrayList<CacheDTO> searchCache(int period) throws IOException {
         try {
             String username = System.getProperty("user.name");
-            FileInputStream data_0 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_0");
+            //FileInputStream data_0 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_0");
+            FileInputStream data_0 = new FileInputStream("C:\\Users\\"+username+"\\files\\data_0");
 
             byte[] header = new byte[0x2000]; // 0x0 ~ 0x2000 : block file header
             byte[] index_block = new byte[0x24]; // 0x24 : index record size

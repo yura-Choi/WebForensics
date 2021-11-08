@@ -1,15 +1,13 @@
 package gui;
 
-import cache.CacheTableModel;
-import record.RecordTableModel;
+import urls.UrlsTableModel;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.sql.SQLException;
-
 public class TableSelectionDemo extends JPanel {
     private static final long serialVersionUID = 1L;
     private JTable table;
@@ -19,25 +17,31 @@ public class TableSelectionDemo extends JPanel {
     }
 
     void addComponentToPane(){
-        table = new JTable();
-        JScrollPane center = new JScrollPane(table);
-        add(center, BorderLayout.CENTER);
-
         try{
-            table.setModel(new CacheTableModel(10));
-        } catch (ClassNotFoundException | SQLException | IOException e){
+            UrlsTableModel table_model = new UrlsTableModel(10);
+
+            TableSorter sorter = new TableSorter(table_model);
+
+            table = new JTable(sorter);
+            TableHeaderSorter.install(sorter, table);
+
+
+        } catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
         }
+
+        JScrollPane center = new JScrollPane(table);
+        add(center, BorderLayout.CENTER);
 
         table.setShowGrid(false);
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
         table.getColumnModel().getColumn(1).setPreferredWidth(200);
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
-       // table.getColumnModel().getColumn(3).setPreferredWidth(10);
-        //table.getColumnModel().getColumn(4).setPreferredWidth(10);
-        //table.getColumnModel().getColumn(5).setPreferredWidth(200);
-        //table.getColumnModel().getColumn(6).setPreferredWidth(10);
+        table.getColumnModel().getColumn(3).setPreferredWidth(10);
+        table.getColumnModel().getColumn(4).setPreferredWidth(10);
+        table.getColumnModel().getColumn(5).setPreferredWidth(200);
+        table.getColumnModel().getColumn(6).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
 
         bottom = new BottomPane();

@@ -1,18 +1,18 @@
-package record;
+package urls;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class RecordDAO {
-    private ArrayList<RecordDTO> records = new ArrayList<RecordDTO>();
+public class UrlsDAO {
+    private ArrayList<UrlsDTO> records = new ArrayList<UrlsDTO>();
     private Connection conn = null;
     Statement stmt;
 
-    public ArrayList<RecordDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
+    public ArrayList<UrlsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
         //db 연결 정보
 
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history";
-//      String url = "jdbc:sqlite:" + "history";
+        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history";
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
 
 
         //db 드라이버 로딩
@@ -30,7 +30,7 @@ public class RecordDAO {
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
-                RecordDTO record = new RecordDTO();
+                UrlsDTO record = new UrlsDTO();
                 record.setId(rs.getString(1));
                 record.setUrl(rs.getString(2));
                 record.setTitle(rs.getString(3));
