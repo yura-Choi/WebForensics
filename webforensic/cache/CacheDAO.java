@@ -34,8 +34,8 @@ public class CacheDAO {
             // if address is -1, it means there is no entry.
 
             entry_addr = sortEntryAddress(entry_addr, entry_count);
-
-            FileInputStream data_1 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_1");
+            // FileInputStream data_1 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_1");
+            FileInputStream data_1 = new FileInputStream("C:\\Users\\"+username+"\\files\\data_1");
 
             int i = 0, current_offset = 0;
             while(entry_addr[i] == -1) i++; // skip until not -1
