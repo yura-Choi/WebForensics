@@ -1,11 +1,13 @@
 package gui;
 
+import cache.CacheTableModel;
 import record.RecordTableModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class TableSelectionDemo extends JPanel {
@@ -22,8 +24,8 @@ public class TableSelectionDemo extends JPanel {
         add(center, BorderLayout.CENTER);
 
         try{
-            table.setModel(new RecordTableModel(10));
-        } catch (ClassNotFoundException | SQLException e){
+            table.setModel(new CacheTableModel(10));
+        } catch (ClassNotFoundException | SQLException | IOException e){
             e.printStackTrace();
         }
 
@@ -32,10 +34,10 @@ public class TableSelectionDemo extends JPanel {
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
         table.getColumnModel().getColumn(1).setPreferredWidth(200);
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(3).setPreferredWidth(10);
-        table.getColumnModel().getColumn(4).setPreferredWidth(10);
-        table.getColumnModel().getColumn(5).setPreferredWidth(200);
-        table.getColumnModel().getColumn(6).setPreferredWidth(10);
+       // table.getColumnModel().getColumn(3).setPreferredWidth(10);
+        //table.getColumnModel().getColumn(4).setPreferredWidth(10);
+        //table.getColumnModel().getColumn(5).setPreferredWidth(200);
+        //table.getColumnModel().getColumn(6).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
 
         bottom = new BottomPane();
