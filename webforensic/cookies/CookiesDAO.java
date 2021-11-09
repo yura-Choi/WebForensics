@@ -29,6 +29,7 @@ public class CookiesDAO {
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
             String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_access_utc >= " + subDays(period);
+
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
