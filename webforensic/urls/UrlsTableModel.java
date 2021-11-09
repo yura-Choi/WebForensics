@@ -1,17 +1,29 @@
-package record;
+package urls;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Vector;
 
-public class RecordTableModel extends AbstractTableModel {
-    private String[] columnNames = {"id", "url", "title", "visit_count", "typed_count", "last_visit_time", "hidden"};
-    private ArrayList<RecordDTO> records;
+public class UrlsTableModel extends AbstractTableModel {
+    private static String[] columnNames = {"id", "url", "title", "visit_count", "typed_count", "last_visit_time", "hidden"};
+    private ArrayList<UrlsDTO> records;
 
 
-    public RecordTableModel(int period) throws ClassNotFoundException, SQLException{
-        RecordDAO dao = new RecordDAO();
+
+    public UrlsTableModel(int period) throws ClassNotFoundException, SQLException{
+        UrlsDAO dao = new UrlsDAO();
         records = dao.searchRecord(period);
+
+        fireTableDataChanged();
     }
 
     public String getColumnName(int column){
@@ -30,8 +42,8 @@ public class RecordTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex){
-        String result = "";
-        RecordDTO to = records.get(rowIndex);
+        Object result = null;
+        UrlsDTO to = records.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 result = to.getId();
@@ -58,3 +70,5 @@ public class RecordTableModel extends AbstractTableModel {
         return result;
     }
 }
+
+
