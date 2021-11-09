@@ -1,17 +1,19 @@
-package urls;
+package cookies;
+
+import urls.UrlsDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UrlsDAO {
-    private ArrayList<UrlsDTO> records = new ArrayList<UrlsDTO>();
+public class CookiesDAO {
+    private ArrayList<CookiesDTO> records = new ArrayList<CookiesDTO>();
     private Connection conn = null;
     Statement stmt;
 
-    public ArrayList<UrlsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
+    public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
         //db 연결 정보
 
-        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history";
+        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\cookies";
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
 
 
@@ -26,18 +28,29 @@ public class UrlsDAO {
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
-            String sql = "SELECT id, url, title, visit_count, typed_count, last_visit_time, hidden FROM urls where last_visit_time >= " + subDays(period);
+            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_visit_time >= " + subDays(period);
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
-                UrlsDTO record = new UrlsDTO();
-                record.setId(rs.getString(1));
-                record.setUrl(rs.getString(2));
-                record.setTitle(rs.getString(3));
-                record.setVisit_count(rs.getString(4));
-                record.setTyped_count(rs.getString(5));
-                record.setLast_visit_time(datetoDefault(chromeToUNIX(rs.getString(6))));
-                record.setHidden(rs.getString(7));
+                CookiesDTO record = new CookiesDTO();
+                record.setCreation_utc(rs.getString(1));
+                record.setTop_frame_site_key(rs.getString(2));
+                record.setHost_key(rs.getString(3));
+                record.setName(rs.getString(4));
+                record.setValue(rs.getString(5));
+                record.setEncrypted_value(rs.getString(6));
+                record.setPath(rs.getString(7));
+                record.setExpires_utc(rs.getString(8));
+                record.setIs_secure(rs.getInt(9));
+                record.setIs_httponly(rs.getInt(10));
+                record.setLast_access_utc(rs.getString(11));
+                record.setHas_expires(rs.getInt(12));
+                record.setIs_persistent(rs.getInt(13));
+                record.setPriority(rs.getInt(14));
+                record.setSamesite(rs.getInt(15));
+                record.setSource_scheme(rs.getInt(16));
+                record.setSource_port(rs.getInt(17));
+                record.setIs_same_party(rs.getInt(18));
 
                 records.add(record);
             }
