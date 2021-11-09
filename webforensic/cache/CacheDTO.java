@@ -7,6 +7,7 @@ public class CacheDTO {
     private String data_size; // This can become string array later.
     private String data_name; // This can become string array or be deleted according to our decision.
 
+
     public CacheDTO(){}
 
     public String getId(){
