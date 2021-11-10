@@ -1,5 +1,6 @@
 package gui;
 
+import cookies.CookiesTableModel;
 import urls.UrlsTableModel;
 
 import javax.swing.*;
@@ -18,7 +19,8 @@ public class TableSelectionDemo extends JPanel {
 
     void addComponentToPane(){
         try{
-            UrlsTableModel table_model = new UrlsTableModel(10);
+//            UrlsTableModel table_model = new UrlsTableModel(10);
+            CookiesTableModel table_model = new CookiesTableModel(10);
 
             TableSorter sorter = new TableSorter(table_model);
 
@@ -42,6 +44,17 @@ public class TableSelectionDemo extends JPanel {
         table.getColumnModel().getColumn(4).setPreferredWidth(10);
         table.getColumnModel().getColumn(5).setPreferredWidth(200);
         table.getColumnModel().getColumn(6).setPreferredWidth(10);
+        table.getColumnModel().getColumn(7).setPreferredWidth(10);
+        table.getColumnModel().getColumn(8).setPreferredWidth(10);
+        table.getColumnModel().getColumn(9).setPreferredWidth(10);
+        table.getColumnModel().getColumn(10).setPreferredWidth(10);
+        table.getColumnModel().getColumn(11).setPreferredWidth(10);
+        table.getColumnModel().getColumn(12).setPreferredWidth(10);
+        table.getColumnModel().getColumn(13).setPreferredWidth(10);
+        table.getColumnModel().getColumn(14).setPreferredWidth(10);
+        table.getColumnModel().getColumn(15).setPreferredWidth(10);
+        table.getColumnModel().getColumn(16).setPreferredWidth(10);
+        table.getColumnModel().getColumn(17).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
 
         bottom = new BottomPane();

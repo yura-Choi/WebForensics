@@ -14,7 +14,7 @@ public class CookiesDAO {
         //db 연결 정보
 
         //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\cookies";
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\cookies";
 
 
         //db 드라이버 로딩
@@ -28,22 +28,22 @@ public class CookiesDAO {
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
-            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_visit_time >= " + subDays(period);
+            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_access_utc >= " + subDays(period);
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
                 CookiesDTO record = new CookiesDTO();
-                record.setCreation_utc(rs.getString(1));
+                record.setCreation_utc(datetoDefault(chromeToUNIX(rs.getString(1))));
                 record.setTop_frame_site_key(rs.getString(2));
                 record.setHost_key(rs.getString(3));
                 record.setName(rs.getString(4));
                 record.setValue(rs.getString(5));
                 record.setEncrypted_value(rs.getString(6));
                 record.setPath(rs.getString(7));
-                record.setExpires_utc(rs.getString(8));
+                record.setExpires_utc(datetoDefault(chromeToUNIX(rs.getString(8))));
                 record.setIs_secure(rs.getInt(9));
                 record.setIs_httponly(rs.getInt(10));
-                record.setLast_access_utc(rs.getString(11));
+                record.setLast_access_utc(datetoDefault(chromeToUNIX(rs.getString(11))));
                 record.setHas_expires(rs.getInt(12));
                 record.setIs_persistent(rs.getInt(13));
                 record.setPriority(rs.getInt(14));
