@@ -2,6 +2,10 @@ package urls;
 
 import util.Time;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -38,10 +42,19 @@ public class UrlsDAO {
 
     public ArrayList<UrlsDTO> searchRecord(int days) {
 
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
+        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
+        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\history");
+        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_history");
+
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_history";
+
+        try {
+            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Time time = Time.getInstance();
-
 
         try{
             conn = DriverManager.getConnection(url);
