@@ -1,8 +1,5 @@
 package timeline;
 
-import base.BaseDTO;
-
-
 public class TimelineDTO {
     private String id;
     private String table_type;

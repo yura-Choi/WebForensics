@@ -1,5 +1,6 @@
 package cookies;
 
+import util.Time;
 import com.sun.jna.platform.win32.Crypt32Util;
 import netscape.javascript.JSObject;
 import org.json.simple.JSONObject;
@@ -20,9 +21,17 @@ import java.util.Arrays;
 import java.util.Base64;
 
 public class CookiesDAO {
+    private static CookiesDAO instance = new CookiesDAO();
+    private CookiesDAO(){}
+
+    public static CookiesDAO getInstance(){
+        return instance;
+    }
+
     private ArrayList<CookiesDTO> records = new ArrayList<CookiesDTO>();
     private Connection conn = null;
     Statement stmt;
+    Time time = Time.getInstance();
 
     public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
         File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\cookies");
@@ -41,39 +50,28 @@ public class CookiesDAO {
         CopyFile copy = CopyFile.getInstance();
         copy.makeNewFile("cookies");
 
-        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\cookies";
-//        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\cookies";
-
-
-        //db 드라이버 로딩
-        try {
-            Class.forName("org.sqlite.JDBC");
-        }
-        catch(ClassNotFoundException e)  {
-            System.out.println("org.sqlite.JDBC를 찾지못했습니다.");
-        }
 
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
 //            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies WHERE name = 'SSID'";
-            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_access_utc >= " + subDays(period);
+            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_access_utc >= " + time.subDays(period);
 
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
                 CookiesDTO record = new CookiesDTO();
-                record.setCreation_utc(datetoDefault(chromeToUNIX(rs.getString(1))));
+                record.setCreation_utc(time.datetoDefault(time.chromeToUNIX(rs.getString(1))));
                 record.setTop_frame_site_key(rs.getString(2));
                 record.setHost_key(rs.getString(3));
                 record.setName(rs.getString(4));
                 record.setValue(rs.getString(5));
                 record.setEncrypted_value(decrypted(rs.getBytes(6)));
                 record.setPath(rs.getString(7));
-                record.setExpires_utc(datetoDefault(chromeToUNIX(rs.getString(8))));
+                record.setExpires_utc(time.datetoDefault(time.chromeToUNIX(rs.getString(8))));
                 record.setIs_secure(rs.getInt(9));
                 record.setIs_httponly(rs.getInt(10));
-                record.setLast_access_utc(datetoDefault(chromeToUNIX(rs.getString(11))));
+                record.setLast_access_utc(time.datetoDefault(time.chromeToUNIX(rs.getString(11))));
                 record.setHas_expires(rs.getInt(12));
                 record.setIs_persistent(rs.getInt(13));
                 record.setPriority(rs.getInt(14));
@@ -82,6 +80,7 @@ public class CookiesDAO {
                 record.setSource_port(rs.getInt(17));
                 record.setIs_same_party(rs.getInt(18));
 
+                record.setUrl(record.getHost_key() + record.getPath());
                 records.add(record);
             }
 
@@ -152,67 +151,15 @@ public class CookiesDAO {
         return new String(decryptedBytes);
     }
 
-    //현재 시간 - day 한 크롬 날짜를 반환합니다
-    public static String subDays(int day) throws SQLException {
-        long before = 11644473600L;
-        long now = Long.valueOf(nowDateString());
-        now = (now+before)*1000000L;
-        long sub = day*24*60*60*1000000L;
-        long sum = now-(sub);
-
-        return String.valueOf(sum);
+    public String getUrl(int idx) {
+        return records.get(idx).getUrl();
     }
 
-//    public static void main(String[] args ) throws SQLException {
-//        System.out.println(datetoDefault(String.valueOf(chromeToUNIX(13315125879249347L))));
-//    }
-
-    //현재 시간을 유닉스 시간으로 반환힙니다
-    public static String nowDateString() throws SQLException {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        }
-        catch(ClassNotFoundException e)  {
-            System.out.println("org.sqlite.JDBC를 찾지못했습니다.");
-        }
-        Connection con = DriverManager.getConnection("jdbc:sqlite::memory:");
-        Statement stmte = con.createStatement();
-        ResultSet rs = stmte.executeQuery("SELECT strftime('%s','now', 'localtime');");
-        rs.next();
-        String ret = rs.getString(1);
-
-        rs.close();
-        stmte.close();
-        con.close();
-
-        return ret;
+    public String getCreate_time(int idx) {
+        return records.get(idx).getCreation_utc();
     }
 
-    //날짜를 국룰 시간으로 반환합니다
-    public static String datetoDefault(String date) throws SQLException {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        }
-        catch(ClassNotFoundException e)  {
-            System.out.println("org.sqlite.JDBC를 찾지못했습니다.");
-        }
-        Connection con = DriverManager.getConnection("jdbc:sqlite::memory:");
-        Statement stmte = con.createStatement();
-        ResultSet rs = stmte.executeQuery("SELECT datetime("+ date +", 'unixepoch')");
-        rs.next();
-        String ret = rs.getString(1);
-
-        rs.close();
-        stmte.close();
-        con.close();
-
-        return ret;
-    }
-
-    //크롬시간을 유닉스 시간으로 바꿔줍니다
-    public static String chromeToUNIX(String chrome) {
-        long c = Long.valueOf(chrome);
-        String ret = String.valueOf(c/1000000L - 11644473600L);
-        return ret;
+    public int getRecordCnt(){
+        return records.size();
     }
 }

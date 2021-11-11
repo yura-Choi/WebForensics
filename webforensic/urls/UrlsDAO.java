@@ -43,15 +43,6 @@ public class UrlsDAO {
 
     public ArrayList<UrlsDTO> searchRecord(int days) {
 
-        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
-//        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\history");
-//        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_history");
-//
-//        try {
-//            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         CopyFile copy = CopyFile.getInstance();
         copy.makeNewFile("history");

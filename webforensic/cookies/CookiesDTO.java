@@ -19,6 +19,7 @@ public class CookiesDTO {
     private int source_scheme;
     private int source_port;
     private int is_same_party;
+    private String url;
 
     public CookiesDTO() {
     }
@@ -166,4 +167,9 @@ public class CookiesDTO {
     public void setIs_same_party(int is_same_party) {
         this.is_same_party = is_same_party;
     }
+
+    public String getUrl() { return url; }
+
+    public void setUrl(String url) { this.url = url; }
+
 }

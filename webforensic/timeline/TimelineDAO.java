@@ -1,7 +1,7 @@
 package timeline;
 
-import base.*;
-import cache.CacheDAO;
+import cache.*;
+import cookies.*;
 import urls.*;
 import util.Time;
 
@@ -27,6 +27,7 @@ public class TimelineDAO{
 
         UrlsDAO urlsDAO = UrlsDAO.getInstance();
         CacheDAO cacheDAO = CacheDAO.getInstance();
+        CookiesDAO cookiesDAO = CookiesDAO.getInstance();
 
         urlsDAO.searchRecord(days);
         try{
@@ -34,6 +35,12 @@ public class TimelineDAO{
         }catch (IOException e) {
             e.printStackTrace();
         }
+        try{
+            cookiesDAO.searchRecord(days);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
 
         int total_index = 0;
         int sz = urlsDAO.getRecordCnt();
@@ -49,6 +56,7 @@ public class TimelineDAO{
         }
         total_index += sz;
 
+
         sz = cacheDAO.getRecordCnt();
         for(int i=0; i<sz; i++){
             TimelineDTO record = new TimelineDTO();
@@ -57,6 +65,21 @@ public class TimelineDAO{
             record.setTable_type("cache");
             record.setUrl(cacheDAO.getUrl(i));
             record.setAccess_time(cacheDAO.getCreate_time(i));
+
+            records.add(record);
+        }
+        total_index += sz;
+
+
+
+        sz = cookiesDAO.getRecordCnt();
+        for(int i=0; i<sz; i++){
+            TimelineDTO record = new TimelineDTO();
+
+            record.setId(Integer.toString(total_index + i + 1));
+            record.setTable_type("cookies");
+            record.setUrl(cookiesDAO.getUrl(i));
+            record.setAccess_time(cookiesDAO.getCreate_time(i));
 
             records.add(record);
         }

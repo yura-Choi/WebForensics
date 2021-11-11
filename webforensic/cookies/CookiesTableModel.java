@@ -1,8 +1,5 @@
 package cookies;
 
-import urls.UrlsDAO;
-import urls.UrlsDTO;
-
 import javax.swing.table.AbstractTableModel;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,10 +8,8 @@ public class CookiesTableModel extends AbstractTableModel {
     private static String[] columnNames = {"creation_utc", " top_frame_site_key", " host_key", " name", " value", " encrypted_value", " path", " expires_utc", " is_secure", " is_httponly", " last_access_utc", " has_expires", " is_persistent", " priority", " samesite", " source_scheme", " source_port", " is_same_party"};
     private ArrayList<CookiesDTO> records;
 
-
-
     public CookiesTableModel(int period) throws ClassNotFoundException, SQLException{
-        CookiesDAO dao = new CookiesDAO();
+        CookiesDAO dao = CookiesDAO.getInstance();
         records = dao.searchRecord(period);
 
         fireTableDataChanged();
