@@ -23,6 +23,19 @@ public class UrlsDAO {
         records.add(record);
     }
 
+    public int getRecordCnt(){
+        return records.size();
+    }
+
+    public String getUrl(int idx){
+        return records.get(idx).getUrl();
+    }
+
+    public String getLast_visit_time(int idx){
+        return records.get(idx).getLast_visit_time();
+    }
+
+
     public ArrayList<UrlsDTO> searchRecord(int days) {
 
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
@@ -59,4 +72,6 @@ public class UrlsDAO {
 
         return records;
     }
+
+
 }

@@ -30,13 +30,13 @@ public class UrlsTableModel extends AbstractTableModel {
     public String getColumnName(int column){
         return columnNames[column];
     }
-
+    /*
     public void searchRecord(int days) throws ClassNotFoundException, SQLException{
         UrlsDAO dao = UrlsDAO.getInstance();
         records = dao.searchRecord(days);
 
         fireTableDataChanged();
-    }
+    }*/
 
     @Override
     public int getRowCount(){

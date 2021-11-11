@@ -12,9 +12,16 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class CacheDAO {
-    private ArrayList<CacheDTO> caches = new ArrayList<CacheDTO>();
+    private static CacheDAO instance = new CacheDAO();
+    private CacheDAO(){}
 
-    public ArrayList<CacheDTO> searchCache(int period) throws IOException {
+    public static CacheDAO getInstance(){
+        return instance;
+    }
+
+    private ArrayList<CacheDTO> records = new ArrayList<CacheDTO>();
+
+    public ArrayList<CacheDTO> searchRecord(int days) throws IOException {
         try {
             String username = System.getProperty("user.name");
             //FileInputStream data_0 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_0");
@@ -79,7 +86,7 @@ public class CacheDAO {
                 // get file size
                 // --> should decide how we use this data.
 
-                caches.add(cache);
+                records.add(cache);
 
                 current_offset = entry_addr[i] + 0x60 + key_len;
             }
@@ -90,7 +97,7 @@ public class CacheDAO {
             e.printStackTrace();
         }
 
-        return caches;
+        return records;
     }
 
     // get entry count in data_0 file
@@ -163,4 +170,17 @@ public class CacheDAO {
         }
         return addr;
     }
+
+    public String getUrl(int idx){
+        return records.get(idx).getUrl();
+    }
+
+    public String getCreate_time(int idx){
+        return records.get(idx).getCreate_time();
+    }
+
+    public int getRecordCnt(){
+        return records.size();
+    }
+
 }

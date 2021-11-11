@@ -6,14 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CacheTableModel extends AbstractTableModel {
+    private static CacheTableModel instance = new CacheTableModel();
+    private CacheTableModel(){}
+
+    public static CacheTableModel getInstance() { return instance;}
+
     private String[] columnNames = {"id", "url", "creation_time"};
     private ArrayList<CacheDTO> records;
-
-
-    public CacheTableModel(int period) throws ClassNotFoundException, SQLException, IOException {
-        CacheDAO dao = new CacheDAO();
-        records = dao.searchCache(period);
-    }
 
     public String getColumnName(int column){
         return columnNames[column];

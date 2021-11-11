@@ -1,6 +1,7 @@
 package gui;
 
 import cookies.CookiesTableModel;
+import timeline.TimelineTableModel;
 import urls.UrlsTableModel;
 
 import javax.swing.*;
@@ -12,14 +13,14 @@ import java.sql.SQLException;
 public class TableSelectionDemo extends JPanel {
     private static final long serialVersionUID = 1L;
     public JTable table;
-    public UrlsTableModel table_model;
+    public TimelineTableModel table_model;
     static BottomPane bottom;
     public TableSelectionDemo(){
         super(new BorderLayout());
     }
 
     void addComponentToPane(){
-        table_model = UrlsTableModel.getInstance();
+        table_model = TimelineTableModel.getInstance();
 
         TableSorter sorter = new TableSorter(table_model);
 
