@@ -19,13 +19,13 @@ public class TableSelectionDemo extends JPanel {
     }
 
     void addComponentToPane(){
-//        UrlsTableModel table_model = null;
+        UrlsTableModel table_model = null;
 //        CookiesTableModel table_model = null;
-        DownloadsTableModel table_model = null;
+//        DownloadsTableModel table_model = null;
         try{
-//            table_model = new UrlsTableModel(10);
+            table_model = new UrlsTableModel(10);
 //            table_model = new CookiesTableModel(10);
-            table_model = new DownloadsTableModel(10);
+//            table_model = new DownloadsTableModel(10);
             TableSorter sorter = new TableSorter(table_model);
 
             table = new JTable(sorter);

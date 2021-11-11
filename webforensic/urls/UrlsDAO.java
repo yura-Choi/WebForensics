@@ -1,5 +1,9 @@
 package urls;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -9,10 +13,22 @@ public class UrlsDAO {
     Statement stmt;
 
     public ArrayList<UrlsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
+        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\history");
+        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_history");
+
+        try {
+            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //db 연결 정보
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_history";
+
         //db 연결 정보
 
         //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\history";
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
+//        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
 
 
         //db 드라이버 로딩

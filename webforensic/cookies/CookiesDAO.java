@@ -2,6 +2,10 @@ package cookies;
 
 import urls.UrlsDTO;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -11,10 +15,22 @@ public class CookiesDAO {
     Statement stmt;
 
     public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
+        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\cookies");
+        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies");
+
+        try {
+            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //db 연결 정보
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies";
+
         //db 연결 정보
 
         //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\cookies";
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\cookies";
+//        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\cookies";
 
 
         //db 드라이버 로딩

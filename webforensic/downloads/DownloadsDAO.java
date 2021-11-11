@@ -1,5 +1,9 @@
 package downloads;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -8,11 +12,19 @@ public class DownloadsDAO {
     private Connection conn = null;
     Statement stmt;
 
-    public ArrayList<DownloadsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
-        //db 연결 정보
+    public ArrayList<DownloadsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException {
+        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\history");
+        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_history");
 
-        //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\cookies";
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
+        try {
+            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //db 연결 정보
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_history";
+//        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
 
 
         //db 드라이버 로딩
