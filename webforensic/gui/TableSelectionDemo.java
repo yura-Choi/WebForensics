@@ -1,6 +1,7 @@
 package gui;
 
 import cookies.CookiesTableModel;
+import downloads.DownloadsTableModel;
 import urls.UrlsTableModel;
 
 import javax.swing.*;
@@ -18,12 +19,13 @@ public class TableSelectionDemo extends JPanel {
     }
 
     void addComponentToPane(){
-        UrlsTableModel table_model = null;
+//        UrlsTableModel table_model = null;
 //        CookiesTableModel table_model = null;
+        DownloadsTableModel table_model = null;
         try{
-            table_model = new UrlsTableModel(10);
+//            table_model = new UrlsTableModel(10);
 //            table_model = new CookiesTableModel(10);
-
+            table_model = new DownloadsTableModel(10);
             TableSorter sorter = new TableSorter(table_model);
 
             table = new JTable(sorter);
@@ -58,6 +60,27 @@ public class TableSelectionDemo extends JPanel {
             table.getColumnModel().getColumn(15).setPreferredWidth(10);
             table.getColumnModel().getColumn(16).setPreferredWidth(10);
             table.getColumnModel().getColumn(17).setPreferredWidth(10);
+        }
+        if(table_model.getClass().getName().equals("DownloadsTableModel")){
+            table.getColumnModel().getColumn(7).setPreferredWidth(10);
+            table.getColumnModel().getColumn(8).setPreferredWidth(10);
+            table.getColumnModel().getColumn(9).setPreferredWidth(10);
+            table.getColumnModel().getColumn(10).setPreferredWidth(10);
+            table.getColumnModel().getColumn(11).setPreferredWidth(10);
+            table.getColumnModel().getColumn(12).setPreferredWidth(10);
+            table.getColumnModel().getColumn(13).setPreferredWidth(10);
+            table.getColumnModel().getColumn(14).setPreferredWidth(10);
+            table.getColumnModel().getColumn(15).setPreferredWidth(10);
+            table.getColumnModel().getColumn(16).setPreferredWidth(10);
+            table.getColumnModel().getColumn(17).setPreferredWidth(10);
+            table.getColumnModel().getColumn(18).setPreferredWidth(10);
+            table.getColumnModel().getColumn(19).setPreferredWidth(10);
+            table.getColumnModel().getColumn(20).setPreferredWidth(10);
+            table.getColumnModel().getColumn(21).setPreferredWidth(10);
+            table.getColumnModel().getColumn(22).setPreferredWidth(10);
+            table.getColumnModel().getColumn(23).setPreferredWidth(10);
+            table.getColumnModel().getColumn(24).setPreferredWidth(10);
+            table.getColumnModel().getColumn(25).setPreferredWidth(10);
         }
         table.getTableHeader().setReorderingAllowed(false);
 
