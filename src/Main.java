@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        String url = System.getenv("USERPROFILE") + "\\files\\cookies";
+        String url = System.getenv("USERPROFILE") + "\\files\\history";
 
         SqliteDB db = new SqliteDB(url);
 
@@ -12,7 +12,7 @@ public class Main {
             System.out.printf(db.getTableList()[i]+"\n");
         }
 
-        ArrayList<String[]> table = db.DefaultTable("cookies");
+        ArrayList<String[]> table = db.DefaultTable("downloads");
 //        ArrayList<String[]> table = new utcToDate().makeOrder("%Y %m %d");
         for(int i=0; i< table.size(); i++){
             //printf 는 %D 같은거 변수로 생각하는데 println은 그냥 출력하네
