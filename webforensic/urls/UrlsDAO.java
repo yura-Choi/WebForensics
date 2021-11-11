@@ -26,7 +26,7 @@ public class UrlsDAO {
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
-            String sql = "SELECT id, url, title, visit_count, typed_count, last_visit_time, hidden FROM urls where last_visit_time >= " + subDays(period);
+            String sql = "SELECT id, url, title, visit_count, typed_count, last_visit_time, hidden FROM urls where last_visit_time >= 13271850451150224";
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
@@ -36,7 +36,7 @@ public class UrlsDAO {
                 record.setTitle(rs.getString(3));
                 record.setVisit_count(rs.getString(4));
                 record.setTyped_count(rs.getString(5));
-                record.setLast_visit_time(datetoDefault(chromeToUNIX(rs.getString(6))));
+                record.setLast_visit_time(rs.getString(6));
                 record.setHidden(rs.getString(7));
 
                 records.add(record);

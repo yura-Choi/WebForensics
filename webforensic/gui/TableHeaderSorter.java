@@ -28,10 +28,11 @@ public class TableHeaderSorter extends MouseAdapter {
         TableColumnModel columnModel = table.getColumnModel();
         int viewColumn = columnModel.getColumnIndexAtX(mouseEvent.getX());
         int column = table.convertColumnIndexToModel(viewColumn);
-        if (mouseEvent.getClickCount() == 1 && column != -1) {
+        int clickCount = mouseEvent.getClickCount();
+        if (clickCount >= 1 && column != -1) {
             System.out.println("Sorting ...");
-            int shiftPressed = (mouseEvent.getModifiers() & InputEvent.SHIFT_MASK);
-            boolean ascending = (shiftPressed == 0);
+            //int shiftPressed = (mouseEvent.getModifiers() & InputEvent.SHIFT_MASK);
+            boolean ascending = (clickCount == 1);
             sorter.sortByColumn(column, ascending);
         }
     }
