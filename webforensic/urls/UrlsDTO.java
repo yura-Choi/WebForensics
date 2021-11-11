@@ -1,14 +1,13 @@
 package urls;
 
-import java.util.ArrayList;
 
-public class UrlsDTO {
+import base.BaseDTO;
+
+public class UrlsDTO extends BaseDTO {
     private String id;
-    private String url;
     private String title;
     private String visit_count;
     private String typed_count;
-    private String last_visit_time;
     private String hidden;
 
     public UrlsDTO(){
@@ -20,14 +19,6 @@ public class UrlsDTO {
 
     public void setId(String id){
         this.id = id;
-    }
-
-    public String getUrl(){
-        return url;
-    }
-
-    public void setUrl(String url){
-        this.url = url;
     }
 
     public String getTitle(){
@@ -55,11 +46,11 @@ public class UrlsDTO {
     }
 
     public String getLast_visit_time(){
-        return last_visit_time;
+        return getAccess_time();
     }
 
     public void setLast_visit_time(String last_visit_time){
-        this.last_visit_time = last_visit_time;
+        setAccess_time(last_visit_time);
     }
 
     public String getHidden(){

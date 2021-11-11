@@ -11,32 +11,28 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 public class TableSelectionDemo extends JPanel {
     private static final long serialVersionUID = 1L;
-    private JTable table;
+    public JTable table;
+    public UrlsTableModel table_model;
     static BottomPane bottom;
     public TableSelectionDemo(){
         super(new BorderLayout());
     }
 
     void addComponentToPane(){
-        try{
-            UrlsTableModel table_model = new UrlsTableModel(10);
-//            CookiesTableModel table_model = new CookiesTableModel(10);
+        table_model = UrlsTableModel.getInstance();
 
-            TableSorter sorter = new TableSorter(table_model);
+        TableSorter sorter = new TableSorter(table_model);
 
-            table = new JTable(sorter);
-            TableHeaderSorter.install(sorter, table);
+        table = new JTable(sorter);
+        TableHeaderSorter.install(sorter, table);
 
-
-        } catch (ClassNotFoundException | SQLException e){
-            e.printStackTrace();
-        }
 
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
 
         table.setShowGrid(false);
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        /*
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
         table.getColumnModel().getColumn(1).setPreferredWidth(200);
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
@@ -44,19 +40,20 @@ public class TableSelectionDemo extends JPanel {
         table.getColumnModel().getColumn(4).setPreferredWidth(10);
         table.getColumnModel().getColumn(5).setPreferredWidth(200);
         table.getColumnModel().getColumn(6).setPreferredWidth(10);
-//        if(type())
-//        table.getColumnModel().getColumn(7).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(8).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(9).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(10).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(11).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(12).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(13).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(14).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(15).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(16).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(17).setPreferredWidth(10);
+        if(type())
+        table.getColumnModel().getColumn(7).setPreferredWidth(10);
+        table.getColumnModel().getColumn(8).setPreferredWidth(10);
+        table.getColumnModel().getColumn(9).setPreferredWidth(10);
+        table.getColumnModel().getColumn(10).setPreferredWidth(10);
+        table.getColumnModel().getColumn(11).setPreferredWidth(10);
+        table.getColumnModel().getColumn(12).setPreferredWidth(10);
+        table.getColumnModel().getColumn(13).setPreferredWidth(10);
+        table.getColumnModel().getColumn(14).setPreferredWidth(10);
+        table.getColumnModel().getColumn(15).setPreferredWidth(10);
+        table.getColumnModel().getColumn(16).setPreferredWidth(10);
+        table.getColumnModel().getColumn(17).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
+         */
 
         bottom = new BottomPane();
         bottom.init(table.getRowCount());
