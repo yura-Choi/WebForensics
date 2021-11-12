@@ -1,5 +1,8 @@
 package downloads;
 
+import util.CopyFile;
+import util.Time;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,37 +11,44 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DownloadsDAO {
+    private static DownloadsDAO instance = new DownloadsDAO();
+    private DownloadsDAO(){
+
+    }
+
+    public static DownloadsDAO getInstance(){
+        return instance;
+    }
+
     private ArrayList<DownloadsDTO> records = new ArrayList<DownloadsDTO>();
     private Connection conn = null;
     Statement stmt;
 
-    public ArrayList<DownloadsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException {
-        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\history");
-        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_history");
+    public int getRecordCnt(){
+        return records.size();
+    }
 
-        try {
-            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public String getUrl(int idx){
+        return records.get(idx).getTab_url();
+    }
+
+    public String getLast_access_time(int idx){
+        return records.get(idx).getLast_access_time();
+    }
+
+    public ArrayList<DownloadsDTO> searchRecord(int period) throws ClassNotFoundException, SQLException {
+        CopyFile copy = CopyFile.getInstance();
+        copy.makeNewFile("history");
 
         //db 연결 정보
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_history";
-//        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\history";
 
-
-        //db 드라이버 로딩
-        try {
-            Class.forName("org.sqlite.JDBC");
-        }
-        catch(ClassNotFoundException e)  {
-            System.out.println("org.sqlite.JDBC를 찾지못했습니다.");
-        }
+        util.Time time = Time.getInstance();
 
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
-            String sql = "SELECT id, guid, current_path, target_path, start_time, received_bytes, total_bytes, state, danger_type, interrupt_reason, hash, end_time, opened, last_access_time, transient, referrer, site_url, tab_url, tab_referrer_url, http_method, by_ext_id, by_ext_name, etag, last_modified, mime_type, original_mime_type FROM downloads where start_time >= " + subDays(period);
+            String sql = "SELECT id, guid, current_path, target_path, start_time, received_bytes, total_bytes, state, danger_type, interrupt_reason, hash, end_time, opened, last_access_time, transient, referrer, site_url, tab_url, tab_referrer_url, http_method, by_ext_id, by_ext_name, etag, last_modified, mime_type, original_mime_type FROM downloads where start_time >= " + time.subDays(period);
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
@@ -49,7 +59,7 @@ public class DownloadsDAO {
                 record.setGuid(rs.getString(i++));
                 record.setCurrent_path(rs.getString(i++));
                 record.setTarget_path(rs.getString(i++));
-                record.setStart_time(datetoDefault(chromeToUNIX(rs.getString(i++))));
+                record.setStart_time(time.printDate(rs.getString(i++)));
                 record.setReceived_bytes(rs.getLong(i++));
                 record.setTotal_bytes(rs.getLong(i++));
                 record.setState(rs.getInt(i++));
@@ -57,18 +67,10 @@ public class DownloadsDAO {
                 record.setInterrupt_reason(rs.getInt(i++));
                 record.setHash(rs.getString(i++));
                 //end time 도 0인게 있다 어케 처리할지 고민해야 할듯!
-                record.setEnd_time(datetoDefault(chromeToUNIX(rs.getString(i++))));
+                record.setEnd_time(time.printDate(rs.getString(i++)));
                 record.setOpened(rs.getInt(i++));
                 //last_access_time 이 0일 경우 예외처리 해야할듯?
-                String access_check = rs.getString(i++);
-                if(access_check.equals("0")){
-                    record.setLast_access_time("Never Accessed");
-                }
-                else {
-                    record.setLast_access_time(datetoDefault(chromeToUNIX(access_check)));
-                }
-//                record.setLast_access_time(datetoDefault(chromeToUNIX(rs.getString(i++))));
-
+                record.setLast_access_time(time.printDate(rs.getString(i++)));
                 record.setDowload_transient(rs.getString(i++));
                 record.setReferrer(rs.getString(i++));
                 record.setSite_url(rs.getString(i++));

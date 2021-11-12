@@ -58,4 +58,18 @@ public class Time {
         String ret = String.valueOf(c/1000000L - 11644473600L);
         return ret;
     }
+
+    //날짜가 0이면 논 출력
+    public String isDateZero(String date){
+        if(date.equals("1601-01-01 00:00:00")){
+            return "NONE";
+        }
+        else{
+            return date;
+        }
+    }
+
+    public String printDate(String date) throws SQLException {
+        return isDateZero(datetoDefault(chromeToUNIX(date)));
+    }
 }

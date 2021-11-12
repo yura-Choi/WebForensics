@@ -5,17 +5,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DownloadsTableModel extends AbstractTableModel {
+    private static DownloadsTableModel instance = new DownloadsTableModel();
+    private DownloadsTableModel(){
+
+    }
+
+    public static DownloadsTableModel getInstance(){ return instance; }
+
     private static String[] columnNames = {"id", " guid", " current_path", " target_path", " start_time", " received_bytes", " total_bytes", " state", " danger_type", " interrupt_reason", " hash", " end_time", " opened", " last_access_time", " transient", " referrer", " site_url", " tab_url", " tab_referrer_url", " http_method", " by_ext_id", " by_ext_name", " etag", " last_modified", " mime_type", " original_mime_type"};
     private ArrayList<DownloadsDTO> records;
 
 
 
-    public DownloadsTableModel(int period) throws ClassNotFoundException, SQLException{
-        DownloadsDAO dao = new DownloadsDAO();
-        records = dao.searchRecord(period);
-
-        fireTableDataChanged();
-    }
+//    public DownloadsTableModel(int period) throws ClassNotFoundException, SQLException{
+//        DownloadsDAO dao = new DownloadsDAO();
+//        records = dao.searchRecord(period);
+//
+//        fireTableDataChanged();
+//    }
 
     public String getColumnName(int column){
         return columnNames[column];

@@ -29,4 +29,16 @@ public class CopyFile {
         }
     }
 
+    public static void makeCache(String filename){
+        String base = System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\Cache\\";
+        File file = new File(base + filename);
+        File Nfile = new File(base + "new_" + filename);
+
+        try {
+            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
