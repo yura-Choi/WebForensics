@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class CacheDAO_2 {
+public class CacheDAO {
     private ArrayList<CacheDTO> caches = new ArrayList<CacheDTO>();
 
     public ArrayList<CacheDTO> searchRecord(int days) throws IOException {
