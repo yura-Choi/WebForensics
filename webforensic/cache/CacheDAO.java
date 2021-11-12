@@ -1,7 +1,7 @@
 package cache;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -11,106 +11,99 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class CacheDAO {
+public class CacheDAO_2 {
     private ArrayList<CacheDTO> caches = new ArrayList<CacheDTO>();
 
-    public ArrayList<CacheDTO> searchCache(int period) throws IOException {
+    public ArrayList<CacheDTO> searchRecord(int days) throws IOException {
         try {
             String username = System.getProperty("user.name");
-            //FileInputStream data_0 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_0");
-            FileInputStream data_0 = new FileInputStream("C:\\Users\\"+username+"\\files\\data_0");
+            RandomAccessFile data_0 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_0", "r");
+            RandomAccessFile data_1 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_1", "r");
 
-            byte[] header = new byte[0x2000]; // 0x0 ~ 0x2000 : block file header
-            byte[] index_block = new byte[0x24]; // 0x24 : index record size
+            byte[] block_header = new byte[0x2000];
+            byte[] index_block = new byte[0x24];
 
-            int tmp, entry_count = 0;
-            tmp = data_0.read(header);
-            entry_count = getEntryCount(header);
+            int entry_count = 0;
+            data_0.read(block_header);
+            entry_count = convertHexToDec(block_header, 0x13, 0x10);
 
             int[] entry_addr = new int[entry_count];
-            for(int i = 0; i < entry_count; i++){
-                tmp = data_0.read(index_block);
+            for (int i = 0; i < entry_count; i++) {
+                data_0.read(index_block);
                 entry_addr[i] = getEntryOffset(index_block);
             }
-            // if address is -1, it means there is no entry.
 
-            entry_addr = sortEntryAddress(entry_addr, entry_count);
-            // FileInputStream data_1 = new FileInputStream("C:\\Users\\"+username+"\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\data_1");
-            FileInputStream data_1 = new FileInputStream("C:\\Users\\"+username+"\\files\\data_1");
-
-            int i = 0, current_offset = 0;
-            while(entry_addr[i] == -1) i++; // skip until not -1
+            int i = 0;
+            while (entry_addr[i] == -1) i++; // skip until not -1
 
             // parse each entry's data
-            for(; i < entry_count; i++){
+            for (; i < entry_count; i++) {
+                if (entry_addr[i] < 0) continue;
+
                 CacheDTO cache = new CacheDTO();
-
-                int padding_size = entry_addr[i] - current_offset;
-                byte padding[] = new byte[padding_size];
-                tmp = data_1.read(padding);
-
                 byte entry_header[] = new byte[0x60];
-                tmp = data_1.read(entry_header);
 
-                // get url
-                byte test[] = new byte[1]; // if key data is not found.
-                tmp = data_1.read(test);
-                if(test[0] == 0){
-                    current_offset = entry_addr[i] + 0x60 + 1;
+                data_1.seek(entry_addr[i]);
+                data_1.read(entry_header);
+
+                // get create time
+                String time = getTimeString(entry_header);
+                if (time.equals("-1")) continue;
+                cache.setCreate_time(time);
+
+                // ready to parse url from key_data
+                byte test[] = new byte[1]; // check whether the key data exists.
+                data_1.read(test);
+                if (test[0] == 0) {
+                    // case of no key_data -> check metadata then can get url
                     continue;
                 }
 
                 // - parse detail url from key_data (detail url is located in third part)
-                int key_len = getKeyLength(entry_header);
-                byte key_data[] = new byte[key_len-1];
-                tmp = data_1.read(key_data);
+                int key_len = convertHexToDec(entry_header, 0x23, 0x20);
+                byte key_data[] = new byte[key_len - 1];
+                data_1.read(key_data);
                 String key_str = new String(key_data, "UTF-8");
                 int j = 0;
-                for(int flag = 0; flag < 2 && j < key_str.length(); j++){
-                    if(key_str.charAt(j) == ' ') flag += 1;
+                for (int flag = 0; flag < 2 && j < key_str.length(); j++) {
+                    if (key_str.charAt(j) == ' ') flag += 1;
                 }
                 char url[] = new char[key_str.length() - j];
                 key_str.getChars(j, key_str.length(), url, 0);
                 cache.setUrl(String.valueOf(url));
 
-                // get create time
-                cache.setCreate_time(getTimeString(entry_header));
-
-                // get file size
-                // --> should decide how we use this data.
+                // cache data size
+                int file_size = convertHexToDec(entry_header, 0x2F, 0x2C);
+                cache.setData_size(String.valueOf(file_size));
 
                 caches.add(cache);
-
-                current_offset = entry_addr[i] + 0x60 + key_len;
             }
 
             data_0.close();
             data_1.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
         return caches;
     }
 
-    // get entry count in data_0 file
-    private static int getEntryCount(byte[] header){
-        int count = 0;
-        for(int i = 0x13; i >= 0x10; i--){
-            count = count << 8;
-            count += Byte.toUnsignedInt(header[i]);
+    // convert byte array to string
+    private static String convertByteArrayToByteString(byte[] bytes){
+        StringBuilder builder = new StringBuilder();
+        for (byte data : bytes) {
+            builder.append(String.format("%02X ", data));
         }
-        return count;
+        return builder.toString();
     }
 
-    // get entry key length in data_1 file
-    private static int getKeyLength(byte[] header){
-        int length = 0;
-        for(int i = 0x23; i >= 0x20; i--){
-            length = length << 8;
-            length += Byte.toUnsignedInt(header[i]);
+    // convert hexdecimal address(length) to decimal address(length) (little endian ver.)
+    private static int convertHexToDec(byte[] header, int start, int end) {
+        int num = 0;
+        for (int i = start; i >= end; i--) {
+            num = num << 8;
+            num += Byte.toUnsignedInt(header[i]);
         }
-        return length;
+        return num;
     }
 
     // convert Chrome Timestamp to readable time string
@@ -120,6 +113,7 @@ public class CacheDAO {
             webKitTimestamp = webKitTimestamp << 8;
             webKitTimestamp += Byte.toUnsignedInt(header[i]);
         }
+
         long epochStart = LocalDateTime
                 .from(LocalDateTime.of(1601, Month.JANUARY, 1, 0, 0))
                 .until(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0), ChronoUnit.MICROS);
@@ -148,19 +142,5 @@ public class CacheDAO {
 
         return address;
     }
-
-    // sort entry offset in index_0 hash table.
-    private static int[] sortEntryAddress(int[] addr, int size){
-        int save = 0;
-        for(int i = 1; i < size; i++){
-            int j = i;
-            save = addr[i];
-            while(j > 0 && addr[j-1] > save){
-                addr[j] = addr[j-1];
-                j--;
-            }
-            addr[j] = save;
-        }
-        return addr;
-    }
 }
+
