@@ -14,21 +14,29 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 public class UrlsTableModel extends AbstractTableModel {
-    private static String[] columnNames = {"id", "url", "title", "visit_count", "typed_count", "last_visit_time", "hidden"};
-    private ArrayList<UrlsDTO> records;
 
+    private static UrlsTableModel instance = new UrlsTableModel();
+    private UrlsTableModel(){
 
-
-    public UrlsTableModel(int period) throws ClassNotFoundException, SQLException{
-        UrlsDAO dao = new UrlsDAO();
-        records = dao.searchRecord(period);
-
-        fireTableDataChanged();
     }
+
+    public static UrlsTableModel getInstance(){
+        return instance;
+    }
+
+    private static String[] columnNames = {"id", "url", "title", "visit_count", "typed_count", "last_visit_time", "hidden"};
+    private ArrayList<UrlsDTO> records = new ArrayList<>();
 
     public String getColumnName(int column){
         return columnNames[column];
     }
+    /*
+    public void searchRecord(int days) throws ClassNotFoundException, SQLException{
+        UrlsDAO dao = UrlsDAO.getInstance();
+        records = dao.searchRecord(days);
+
+        fireTableDataChanged();
+    }*/
 
     @Override
     public int getRowCount(){

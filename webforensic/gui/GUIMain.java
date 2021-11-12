@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class GUIMain {
     public static void startGUI(){
@@ -25,7 +26,15 @@ public class GUIMain {
         Menubar mainMenuBar = new Menubar();
         mainFrame.setJMenuBar(mainMenuBar);
 
-        //mainFrame.pack();
         mainFrame.setVisible(true);
+
+        String days = (String)JOptionPane.showInputDialog(newContentPane, "items from the last xx days", "Advanced Options",
+                JOptionPane.PLAIN_MESSAGE, null, null, "10");
+
+        try{
+            newContentPane.table_model.searchRecord(Integer.valueOf(days));
+        }catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

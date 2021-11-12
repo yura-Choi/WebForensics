@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import urls.UrlsDTO;
+import util.CopyFile;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
@@ -37,6 +38,8 @@ public class CookiesDAO {
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies";
 
         //db 연결 정보
+        CopyFile copy = CopyFile.getInstance();
+        copy.makeNewFile("cookies");
 
         //String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\cookies";
 //        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\files\\cookies";

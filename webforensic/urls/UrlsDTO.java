@@ -1,7 +1,5 @@
 package urls;
 
-import java.util.ArrayList;
-
 public class UrlsDTO {
     private String id;
     private String url;
@@ -22,13 +20,9 @@ public class UrlsDTO {
         this.id = id;
     }
 
-    public String getUrl(){
-        return url;
-    }
+    public String getUrl() { return url; }
 
-    public void setUrl(String url){
-        this.url = url;
-    }
+    public void setUrl(String url) { this.url = url; }
 
     public String getTitle(){
         return title;
@@ -54,9 +48,7 @@ public class UrlsDTO {
         this.typed_count = typed_count;
     }
 
-    public String getLast_visit_time(){
-        return last_visit_time;
-    }
+    public String getLast_visit_time(){ return last_visit_time; }
 
     public void setLast_visit_time(String last_visit_time){
         this.last_visit_time = last_visit_time;

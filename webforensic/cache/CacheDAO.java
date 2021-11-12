@@ -1,5 +1,6 @@
 package cache;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.Instant;
@@ -12,7 +13,14 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class CacheDAO {
-    private ArrayList<CacheDTO> caches = new ArrayList<CacheDTO>();
+    private static CacheDAO instance = new CacheDAO();
+    private CacheDAO(){}
+
+    public static CacheDAO getInstance(){
+        return instance;
+    }
+
+    private ArrayList<CacheDTO> records = new ArrayList<CacheDTO>();
 
     public ArrayList<CacheDTO> searchRecord(int days) throws IOException {
         try {
@@ -76,24 +84,16 @@ public class CacheDAO {
                 int file_size = convertHexToDec(entry_header, 0x2F, 0x2C);
                 cache.setData_size(String.valueOf(file_size));
 
-                caches.add(cache);
+                records.add(cache);
             }
 
             data_0.close();
             data_1.close();
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
-        return caches;
-    }
 
-    // convert byte array to string
-    private static String convertByteArrayToByteString(byte[] bytes){
-        StringBuilder builder = new StringBuilder();
-        for (byte data : bytes) {
-            builder.append(String.format("%02X ", data));
-        }
-        return builder.toString();
+        return records;
     }
 
     // convert hexdecimal address(length) to decimal address(length) (little endian ver.)
@@ -142,5 +142,17 @@ public class CacheDAO {
 
         return address;
     }
-}
 
+    public String getUrl(int idx){
+        return records.get(idx).getUrl();
+    }
+
+    public String getCreate_time(int idx){
+        return records.get(idx).getCreate_time();
+    }
+
+    public int getRecordCnt(){
+        return records.size();
+    }
+
+}
