@@ -5,6 +5,7 @@ import netscape.javascript.JSObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import urls.UrlsDAO;
 import urls.UrlsDTO;
 import util.CopyFile;
 import util.Time;
@@ -23,9 +24,34 @@ import java.util.Base64;
 import static util.Time.chromeToUNIX;
 
 public class CookiesDAO {
+    private static CookiesDAO instance = new CookiesDAO();
+    private CookiesDAO(){
+
+    }
+
+    public static CookiesDAO getInstance(){
+        return instance;
+    }
+
     private ArrayList<CookiesDTO> records = new ArrayList<CookiesDTO>();
     private Connection conn = null;
     Statement stmt;
+
+    public void addRecord(CookiesDTO record){
+        records.add(record);
+    }
+
+    public int getRecordCnt(){
+        return records.size();
+    }
+
+    public String getUrl(int idx){
+        return records.get(idx).getUrl();
+    }
+
+    public String getLast_visit_time(int idx){
+        return records.get(idx).getLast_access_utc();
+    }
 
     public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
         CopyFile copy = CopyFile.getInstance();

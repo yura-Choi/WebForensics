@@ -29,13 +29,14 @@ public class TimelineDAO{
 
         UrlsDAO urlsDAO = UrlsDAO.getInstance();
         CacheDAO cacheDAO = CacheDAO.getInstance();
-//        CookiesDAO cookieDAO = CookiesDAO.getInstance();
+        CookiesDAO cookieDAO = CookiesDAO.getInstance();
         DownloadsDAO downloadsDAO = DownloadsDAO.getInstance();
 
         urlsDAO.searchRecord(days);
         try{
             cacheDAO.searchRecord(days);
             downloadsDAO.searchRecord(days);
+            cookieDAO.searchRecord(days);
         }catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -77,6 +78,19 @@ public class TimelineDAO{
 
             record.setId(Integer.toString(total_index + i + 1));
             record.setTable_type("downloads");
+            record.setUrl(downloadsDAO.getUrl(i));
+            record.setAccess_time(downloadsDAO.getLast_access_time(i));
+
+            records.add(record);
+        }
+        total_index += sz;
+
+        sz = downloadsDAO.getRecordCnt();
+        for(int i=0; i<sz; i++){
+            TimelineDTO record = new TimelineDTO();
+
+            record.setId(Integer.toString(total_index + i + 1));
+            record.setTable_type("cookies");
             record.setUrl(downloadsDAO.getUrl(i));
             record.setAccess_time(downloadsDAO.getLast_access_time(i));
 
