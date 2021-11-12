@@ -33,4 +33,12 @@ public class CacheDTO {
     public void setCreate_time(String create_time){
         this.create_time = create_time;
     }
+
+    public String getData_size(){
+        return data_size;
+    }
+
+    public void setData_size(String data_size){
+        this.data_size = data_size;
+    }
 }
