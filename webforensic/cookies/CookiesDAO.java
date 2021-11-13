@@ -75,14 +75,14 @@ public class CookiesDAO {
 //                System.out.println(time.printDate(rs.getString(1)));
                 record.setCreation_utc(time.printDate(rs.getString(1)));
                 record.setTop_frame_site_key(rs.getString(2));
-                System.out.println(rs.getString(3));
+//                System.out.println(rs.getString(3));
                 record.setHost_key(rs.getString(3));
                 record.setName(rs.getString(4));
                 record.setValue(rs.getString(5));
                 record.setEncrypted_value(decrypted(rs.getBytes(6)));
                 record.setPath(rs.getString(7));
 //                System.out.println(rs.getString(8));
-                System.out.println(time.printDate(rs.getString(8)));
+//                System.out.println(time.printDate(rs.getString(8)));
                 record.setExpires_utc(time.printDate(rs.getString(8)));
                 record.setIs_secure(rs.getInt(9));
                 record.setIs_httponly(rs.getInt(10));
