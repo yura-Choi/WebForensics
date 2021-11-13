@@ -3,7 +3,6 @@ package cache;
 import util.CopyFile;
 import util.Time;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.sql.SQLException;
