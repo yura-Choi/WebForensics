@@ -33,13 +33,12 @@ public class CacheDAO {
             CopyFile copy = CopyFile.getInstance();
             copy.makeCache("data_0");
             copy.makeCache("data_1");
-            copy.makeCache("data_2");
-            copy.makeCache("data_3");
 
             RandomAccessFile data_0 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_0", "r");
             RandomAccessFile data_1 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_1", "r");
-            RandomAccessFile data_2 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_2", "r");
-            RandomAccessFile data_3 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_3", "r");
+
+            Time time = Time.getInstance();
+            String time_str = time.subDays(days);
 
             byte[] block_header = new byte[0x2000];
             byte[] index_block = new byte[0x24];
@@ -54,16 +53,9 @@ public class CacheDAO {
                 entry_addr[i] = getEntryOffset(index_block);
             }
 
-            int i = 0;
-            while (entry_addr[i] == -1) i++; // skip until not -1
-
-            Time time = Time.getInstance();
-            String time_str = time.subDays(days);
-            System.out.println("time_str: " + time_str);
-
             // parse each entry's data
-            for (; i < entry_count; i++) {
-                if (entry_addr[i] < 0) continue;
+            for (int i = 0; i < entry_count; i++) {
+                if (entry_addr[i] < 0) continue; // skip if entry address is -1.
 
                 CacheDTO cache = new CacheDTO();
                 byte entry_header[] = new byte[0x60];
@@ -73,7 +65,6 @@ public class CacheDAO {
 
                 // get create time
                 String time_test = getTimeString(entry_header, time_str);
-                System.out.println("time_test: " + time_test);
                 if (time_test.equals("-1")) continue;
                 cache.setCreate_time(time_test);
 
