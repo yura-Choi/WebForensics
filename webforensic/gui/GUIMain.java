@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 
 public class GUIMain {
@@ -19,7 +20,8 @@ public class GUIMain {
         mainFrame.setResizable(false);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        TableSelectionDemo newContentPane = new TableSelectionDemo();
+        TableSelectionDemo newContentPane = TableSelectionDemo.getInstance();
+        newContentPane.setLayout(new BorderLayout());
         newContentPane.addComponentToPane();
         mainFrame.getContentPane().add(newContentPane);
 
@@ -32,7 +34,7 @@ public class GUIMain {
                 JOptionPane.PLAIN_MESSAGE, null, null, "10");
 
         try{
-            newContentPane.table_model.searchRecord(Integer.valueOf(days));
+            newContentPane.timelineTable_model.searchRecord(Integer.valueOf(days));
         }catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

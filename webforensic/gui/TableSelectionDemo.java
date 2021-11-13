@@ -1,5 +1,6 @@
 package gui;
 
+import cookies.CookiesDAO;
 import cookies.CookiesTableModel;
 import downloads.DownloadsTableModel;
 import timeline.TimelineTableModel;
@@ -12,27 +13,48 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 public class TableSelectionDemo extends JPanel {
-    private static final long serialVersionUID = 1L;
-    public JTable table;
-    public TimelineTableModel table_model;
-    static BottomPane bottom;
-    public TableSelectionDemo(){
-        super(new BorderLayout());
+
+    private static TableSelectionDemo instance = new TableSelectionDemo();
+    private TableSelectionDemo() {}
+
+    public static TableSelectionDemo getInstance(){
+        return instance;
     }
 
-    void addComponentToPane(){
-        table_model = TimelineTableModel.getInstance();
 
-        TableSorter sorter = new TableSorter(table_model);
+
+    private static final long serialVersionUID = 1L;
+    public JTable table;
+    public TimelineTableModel timelineTable_model;
+    public UrlsTableModel urlsTable_model;
+    static BottomPane bottom;
+
+
+    void addComponentToPane(){
+        setTimelineTable();
+
+
+        bottom = new BottomPane();
+        bottom.init(table.getRowCount());
+        bottom.setBackground(Color.WHITE);
+        add(bottom, BorderLayout.PAGE_END);
+
+        setupTopPane();
+    }
+
+    void setTimelineTable(){
+        timelineTable_model = TimelineTableModel.getInstance();
+
+        TableSorter sorter = new TableSorter(timelineTable_model);
 
         table = new JTable(sorter);
         TableHeaderSorter.install(sorter, table);
-
 
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
 
         table.setShowGrid(false);
+
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -56,13 +78,46 @@ public class TableSelectionDemo extends JPanel {
 //        table.getColumnModel().getColumn(17).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
          */
+    }
 
-        bottom = new BottomPane();
-        bottom.init(table.getRowCount());
-        bottom.setBackground(Color.WHITE);
-        add(bottom, BorderLayout.PAGE_END);
+    void setUrlsTable(){
+        urlsTable_model = UrlsTableModel.getInstance();
+        urlsTable_model.fireTableDataChanged();
 
-        setupTopPane();
+        TableSorter sorter = new TableSorter(urlsTable_model);
+
+        table = new JTable(sorter);
+        TableHeaderSorter.install(sorter, table);
+
+
+        JScrollPane center = new JScrollPane(table);
+        add(center, BorderLayout.CENTER);
+
+        table.setShowGrid(false);
+
+        //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        /*
+        table.getColumnModel().getColumn(0).setPreferredWidth(10);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(10);
+        table.getColumnModel().getColumn(4).setPreferredWidth(10);
+        table.getColumnModel().getColumn(5).setPreferredWidth(200);
+        table.getColumnModel().getColumn(6).setPreferredWidth(10);
+//        if(type())
+//        table.getColumnModel().getColumn(7).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(8).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(9).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(10).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(11).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(12).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(13).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(14).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(15).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(16).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(17).setPreferredWidth(10);
+        table.getTableHeader().setReorderingAllowed(false);
+         */
     }
 
     void setupTopPane(){
@@ -162,23 +217,7 @@ public class TableSelectionDemo extends JPanel {
             }
         });
 
-        // topPane.add(mainToolBar, BorderLayout.PAGE_START);
 
-
-
-        /*
-        JButton search = new JButton("검색");
-        topPane.add(search, BorderLayout.LINE_END);
-        search.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getActionCommand().equals("검색")){
-                    tableController.loadData(kwdTextField.getText());
-                }
-            }
-        });
-
-        */
         add(mainToolBar, BorderLayout.PAGE_START);
     }
 

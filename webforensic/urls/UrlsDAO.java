@@ -42,6 +42,8 @@ public class UrlsDAO {
 
 
     public ArrayList<UrlsDTO> searchRecord(int days) {
+
+
         CopyFile copy = CopyFile.getInstance();
         copy.makeNewFile("history");
 
@@ -62,8 +64,7 @@ public class UrlsDAO {
                 record.setTitle(rs.getString(3));
                 record.setVisit_count(rs.getString(4));
                 record.setTyped_count(rs.getString(5));
-//                record.setLast_visit_time(time.datetoDefault(time.chromeToUNIX("0")));
-                record.setLast_visit_time(time.printDate(rs.getString(6)));
+                record.setLast_visit_time(time.datetoDefault(time.chromeToUNIX(rs.getString(6))));
                 record.setHidden(rs.getString(7));
 
                 records.add(record);

@@ -1,14 +1,13 @@
 package cookies;
 
+import util.Time;
 import com.sun.jna.platform.win32.Crypt32Util;
 import netscape.javascript.JSObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import urls.UrlsDAO;
 import urls.UrlsDTO;
 import util.CopyFile;
-import util.Time;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
@@ -21,13 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 
-import static util.Time.chromeToUNIX;
-
 public class CookiesDAO {
     private static CookiesDAO instance = new CookiesDAO();
-    private CookiesDAO(){
-
-    }
+    private CookiesDAO(){}
 
     public static CookiesDAO getInstance(){
         return instance;
@@ -36,31 +31,26 @@ public class CookiesDAO {
     private ArrayList<CookiesDTO> records = new ArrayList<CookiesDTO>();
     private Connection conn = null;
     Statement stmt;
-
-    public void addRecord(CookiesDTO record){
-        records.add(record);
-    }
-
-    public int getRecordCnt(){
-        return records.size();
-    }
-
-    public String getUrl(int idx){
-        return records.get(idx).getUrl();
-    }
-
-    public String getLast_visit_time(int idx){
-        return records.get(idx).getLast_access_utc();
-    }
+    Time time = Time.getInstance();
 
     public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
-        CopyFile copy = CopyFile.getInstance();
-        copy.makeNewFile("cookies");
+        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\cookies");
+        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies");
+
+        try {
+            Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //db 연결 정보
         String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies";
 
-        util.Time time = Time.getInstance();
+        //db 연결 정보
+        CopyFile copy = CopyFile.getInstance();
+        copy.makeNewFile("cookies");
+
+
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
@@ -163,5 +153,17 @@ public class CookiesDAO {
         }
 
         return new String(decryptedBytes);
+    }
+
+    public String getUrl(int idx) {
+        return records.get(idx).getUrl();
+    }
+
+    public String getCreate_time(int idx) {
+        return records.get(idx).getCreation_utc();
+    }
+
+    public int getRecordCnt(){
+        return records.size();
     }
 }
