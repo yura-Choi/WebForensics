@@ -85,14 +85,14 @@ public class TimelineDAO{
         }
         total_index += sz;
 
-        sz = downloadsDAO.getRecordCnt();
+        sz = cookieDAO.getRecordCnt();
         for(int i=0; i<sz; i++){
             TimelineDTO record = new TimelineDTO();
 
             record.setId(Integer.toString(total_index + i + 1));
             record.setTable_type("cookies");
-            record.setUrl(downloadsDAO.getUrl(i));
-            record.setAccess_time(downloadsDAO.getLast_access_time(i));
+            record.setUrl(cookieDAO.getUrl(i));
+            record.setAccess_time(cookieDAO.getLast_visit_time(i));
 
             records.add(record);
         }

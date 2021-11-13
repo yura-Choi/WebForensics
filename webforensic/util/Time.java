@@ -1,6 +1,8 @@
 package util;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Time {
 
@@ -38,18 +40,25 @@ public class Time {
 
     //날짜를 국룰 시간으로 반환합니다
     public static String datetoDefault(String date) throws SQLException {
+//        sqlite는 숫자 크면 오류터지는듯 20000년 넘는건 null 나옴;;
+//        Connection conn = DriverManager.getConnection("jdbc:sqlite::memory:");
+//        Statement stmt = conn.createStatement();
+//        ResultSet rs = stmt.executeQuery("SELECT datetime("+ date +", 'unixepoch')");
+//        rs.next();
+//        String ret = rs.getString(1);
+//
+//        rs.close();
+//        stmt.close();
+//        conn.close();
 
-        Connection conn = DriverManager.getConnection("jdbc:sqlite::memory:");
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT datetime("+ date +", 'unixepoch')");
-        rs.next();
-        String ret = rs.getString(1);
+        long time = Long.valueOf(date+"000");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        java.util.Date date2 = new Date();
+        date2.setTime(time);
 
-        rs.close();
-        stmt.close();
-        conn.close();
+        String dateString = simpleDateFormat.format(date2);
 
-        return ret;
+        return dateString;
     }
 
     //크롬시간을 유닉스 시간으로 바꿔줍니다
@@ -60,8 +69,8 @@ public class Time {
     }
 
     //날짜가 0이면 논 출력
-    public String isDateZero(String date){
-        if(date.equals("1601-01-01 00:00:00")){
+    public static String isDateZero(String date){
+        if(date.equals("1601-01-01 00:00:00") || date == null){
             return "NONE";
         }
         else{
@@ -73,3 +82,4 @@ public class Time {
         return isDateZero(datetoDefault(chromeToUNIX(date)));
     }
 }
+
