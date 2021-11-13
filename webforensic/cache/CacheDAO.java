@@ -31,9 +31,13 @@ public class CacheDAO {
             CopyFile copy = CopyFile.getInstance();
             copy.makeCache("data_0");
             copy.makeCache("data_1");
+            copy.makeCache("data_2");
+            copy.makeCache("data_3");
 
             RandomAccessFile data_0 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_0", "r");
             RandomAccessFile data_1 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_1", "r");
+            RandomAccessFile data_2 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_2", "r");
+            RandomAccessFile data_3 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_3", "r");
 
             byte[] block_header = new byte[0x2000];
             byte[] index_block = new byte[0x24];
