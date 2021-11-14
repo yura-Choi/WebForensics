@@ -159,8 +159,8 @@ public class CookiesDAO {
         return records.get(idx).getUrl();
     }
 
-    public String getCreate_time(int idx) {
-        return records.get(idx).getCreation_utc();
+    public String getLast_access_time(int idx) {
+        return records.get(idx).getLast_access_utc();
     }
 
     public int getRecordCnt(){

@@ -70,7 +70,7 @@ public class Time {
 
     //날짜가 0이면 논 출력
     public static String isDateZero(String date){
-        if(date.equals("1601-01-01 00:00:00") || date == null){
+        if(date.equals("1601-01-01 00:00:00") ||date.equals("1601-01-01 09:00:00") || date == null){
             return "NONE";
         }
         else{
