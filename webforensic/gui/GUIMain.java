@@ -16,8 +16,8 @@ public class GUIMain {
 
     private static void createAndShowGUI(){
         JFrame mainFrame = new JFrame("WebForensic");
-        mainFrame.setSize(1100, 600);
-        mainFrame.setResizable(false);
+        mainFrame.setSize(1600, 900);
+        mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         TableSelectionDemo newContentPane = TableSelectionDemo.getInstance();
