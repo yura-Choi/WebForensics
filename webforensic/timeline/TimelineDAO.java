@@ -90,7 +90,7 @@ public class TimelineDAO{
 
             record.setTable_type("cookies");
             record.setUrl(cookieDAO.getUrl(i));
-            record.setAccess_time(cookieDAO.getCreate_time(i));
+            record.setAccess_time(cookieDAO.getLast_access_time(i));
 
             records.add(record);
         }
