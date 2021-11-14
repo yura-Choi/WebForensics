@@ -11,7 +11,7 @@ public class CacheTableModel extends AbstractTableModel {
 
     public static CacheTableModel getInstance() { return instance;}
 
-    private String[] columnNames = {"id", "url", "creation time", "file size"};
+    private String[] columnNames = {"id", "url", "creation time", "file size(byte)"};
     private ArrayList<CacheDTO> records;
 
     public String getColumnName(int column){
