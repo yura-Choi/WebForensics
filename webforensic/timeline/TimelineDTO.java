@@ -1,5 +1,7 @@
 package timeline;
 
+import java.util.Comparator;
+
 public class TimelineDTO {
     private String id;
     private String table_type;
@@ -23,4 +25,11 @@ public class TimelineDTO {
     public String getAccess_time() { return access_time; }
 
     public void setAccess_time(String access_time) { this.access_time = access_time; }
+}
+
+class TimelineDTOCompator implements Comparator<TimelineDTO>{
+    @Override
+    public int compare(TimelineDTO d1, TimelineDTO d2){
+        return d1.getAccess_time().compareTo(d2.getAccess_time());
+    }
 }

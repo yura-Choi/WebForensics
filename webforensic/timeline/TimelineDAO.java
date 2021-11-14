@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TimelineDAO{
     private static TimelineDAO instance = new TimelineDAO();
@@ -50,7 +51,6 @@ public class TimelineDAO{
         for(int i=0; i<sz; i++){
             TimelineDTO record = new TimelineDTO();
 
-            record.setId(Integer.toString(total_index + i + 1));
             record.setTable_type("urls");
             record.setUrl(urlsDAO.getUrl(i));
             record.setAccess_time(urlsDAO.getLast_visit_time(i));
@@ -63,7 +63,6 @@ public class TimelineDAO{
         for(int i=0; i<sz; i++){
             TimelineDTO record = new TimelineDTO();
 
-            record.setId(Integer.toString(total_index + i + 1));
             record.setTable_type("cache");
             record.setUrl(cacheDAO.getUrl(i));
             record.setAccess_time(cacheDAO.getCreate_time(i));
@@ -89,7 +88,6 @@ public class TimelineDAO{
         for(int i=0; i<sz; i++){
             TimelineDTO record = new TimelineDTO();
 
-            record.setId(Integer.toString(total_index + i + 1));
             record.setTable_type("cookies");
             record.setUrl(cookieDAO.getUrl(i));
             record.setAccess_time(cookieDAO.getCreate_time(i));
@@ -97,6 +95,11 @@ public class TimelineDAO{
             records.add(record);
         }
         total_index += sz;
+
+        Collections.sort(records, new TimelineDTOCompator());
+        for(int i=0; i<total_index; i++){
+            records.get(i).setId(Integer.toString(i+1));
+        }
 
         return records;
     }
