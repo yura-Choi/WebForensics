@@ -18,6 +18,8 @@ public class CacheTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
+    public void setRecords(ArrayList<CacheDTO> records) { this.records = records; }
+
     @Override
     public int getRowCount(){
         return records.size();

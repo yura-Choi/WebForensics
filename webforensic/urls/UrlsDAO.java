@@ -20,7 +20,7 @@ public class UrlsDAO {
         return instance;
     }
 
-    private ArrayList<UrlsDTO> records = new ArrayList<UrlsDTO>();
+    public ArrayList<UrlsDTO> records = new ArrayList<UrlsDTO>();
     private Connection conn = null;
     Statement stmt;
 
@@ -40,9 +40,7 @@ public class UrlsDAO {
         return records.get(idx).getLast_visit_time();
     }
 
-
     public ArrayList<UrlsDTO> searchRecord(int days) {
-
 
         CopyFile copy = CopyFile.getInstance();
         copy.makeNewFile("history");
@@ -80,6 +78,5 @@ public class UrlsDAO {
 
         return records;
     }
-
 
 }

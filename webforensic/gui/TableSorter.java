@@ -2,24 +2,20 @@ package gui;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.util.Date;
 import java.util.Vector;
 
 public class TableSorter extends TableMap implements TableModelListener{
+    private static TableSorter instance = new TableSorter();
+    private TableSorter(){}
+
+    public static TableSorter getInstance() { return instance; }
+
     int indexes[] = new int[0];
-
     Vector sortingColumns = new Vector();
-
     boolean ascending = true;
 
-    public TableSorter() {
-    }
-
-    public TableSorter(TableModel model) {
-        setModel(model);
-    }
 
     public void setModel(TableModel model) {
         super.setModel(model);
@@ -212,6 +208,7 @@ public class TableSorter extends TableMap implements TableModelListener{
     }
 }
 
+
 class TableMap extends AbstractTableModel implements TableModelListener {
 
     TableModel model;
@@ -229,6 +226,7 @@ class TableMap extends AbstractTableModel implements TableModelListener {
             this.model.addTableModelListener(this);
         }
     }
+
 
     public Class getColumnClass(int column) {
         return model.getColumnClass(column);

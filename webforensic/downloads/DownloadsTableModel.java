@@ -28,6 +28,8 @@ public class DownloadsTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
+    public void setRecords(ArrayList<DownloadsDTO> records) { this.records = records; }
+
     @Override
     public int getRowCount(){
         return records.size();

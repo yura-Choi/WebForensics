@@ -1,17 +1,16 @@
 package gui;
 
-import cookies.CookiesDAO;
+import cache.CacheTableModel;
 import cookies.CookiesTableModel;
 import downloads.DownloadsTableModel;
 import timeline.TimelineTableModel;
 import urls.UrlsTableModel;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+
 public class TableSelectionDemo extends JPanel {
 
     private static TableSelectionDemo instance = new TableSelectionDemo();
@@ -24,14 +23,26 @@ public class TableSelectionDemo extends JPanel {
 
 
     private static final long serialVersionUID = 1L;
-    public JTable table;
-    public TimelineTableModel timelineTable_model;
-    public UrlsTableModel urlsTable_model;
+    TableSorter sorter = TableSorter.getInstance();
+    public JTable table = new JTable(sorter);
+
+    public UrlsTableModel urlsTable_model = UrlsTableModel.getInstance();
+    public DownloadsTableModel downloadsTable_model = DownloadsTableModel.getInstance();
+    public CookiesTableModel cookiesTable_model = CookiesTableModel.getInstance();
+    public CacheTableModel cacheTable_model = CacheTableModel.getInstance();
+    public TimelineTableModel timelineTable_model = TimelineTableModel.getInstance();
+
+    public TableHeaderSorter tableHeaderSorter = TableHeaderSorter.getInstance();
     static BottomPane bottom;
 
-
     void addComponentToPane(){
-        setTimelineTable();
+        JScrollPane center = new JScrollPane(table);
+        add(center, BorderLayout.CENTER);
+        sorter.setModel(timelineTable_model);
+        tableHeaderSorter.install(sorter, table);
+        table.setShowGrid(false);
+
+        // setTimelineTable();
 
 
         bottom = new BottomPane();
@@ -43,17 +54,9 @@ public class TableSelectionDemo extends JPanel {
     }
 
     void setTimelineTable(){
-        timelineTable_model = TimelineTableModel.getInstance();
+        sorter.setModel(timelineTable_model);
+        timelineTable_model.fireTableDataChanged();
 
-        TableSorter sorter = new TableSorter(timelineTable_model);
-
-        table = new JTable(sorter);
-        TableHeaderSorter.install(sorter, table);
-
-        JScrollPane center = new JScrollPane(table);
-        add(center, BorderLayout.CENTER);
-
-        table.setShowGrid(false);
 
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
@@ -81,19 +84,14 @@ public class TableSelectionDemo extends JPanel {
     }
 
     void setUrlsTable(){
-        urlsTable_model = UrlsTableModel.getInstance();
+        // urlsTable_model = UrlsTableModel.getInstance();
+        // urlsTable_model.fireTableDataChanged();
+
+        // sorter.setModel(urlsTable_model);
+        //table.setColumnModel(urlsTableColumnModel);
+
+        sorter.setModel(urlsTable_model);
         urlsTable_model.fireTableDataChanged();
-
-        TableSorter sorter = new TableSorter(urlsTable_model);
-
-        table = new JTable(sorter);
-        TableHeaderSorter.install(sorter, table);
-
-
-        JScrollPane center = new JScrollPane(table);
-        add(center, BorderLayout.CENTER);
-
-        table.setShowGrid(false);
 
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
@@ -118,6 +116,21 @@ public class TableSelectionDemo extends JPanel {
 //        table.getColumnModel().getColumn(17).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
          */
+    }
+
+    void setDownloadsTable(){
+        sorter.setModel(downloadsTable_model);
+        downloadsTable_model.fireTableDataChanged();
+    }
+
+    void setCookiesTable(){
+        sorter.setModel(cookiesTable_model);
+        cookiesTable_model.fireTableDataChanged();
+    }
+
+    void setCacheTable(){
+        sorter.setModel(cacheTable_model);
+        cacheTable_model.fireTableDataChanged();
     }
 
     void setupTopPane(){

@@ -20,7 +20,7 @@ public class DownloadsDAO {
         return instance;
     }
 
-    private ArrayList<DownloadsDTO> records = new ArrayList<DownloadsDTO>();
+    public ArrayList<DownloadsDTO> records = new ArrayList<DownloadsDTO>();
     private Connection conn = null;
     Statement stmt;
 

@@ -27,6 +27,7 @@ public class Menubar extends JMenuBar {
     JMenuItem downloadItem = new JMenuItem("Download");
     JMenuItem cookieItem = new JMenuItem("Cookie");
     JMenuItem cacheItem = new JMenuItem("Cache");
+    JMenuItem timelineItem = new JMenuItem("Timeline");
 
     TableSelectionDemo tableSelect;
 
@@ -52,11 +53,36 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tableSelect.setUrlsTable();
-                System.out.println("urlsItem clicked..");
             }
         });
         FunctionMenu.add(downloadItem);
+        downloadItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableSelect.setDownloadsTable();
+            }
+        });
         FunctionMenu.add(cookieItem);
+        cookieItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableSelect.setCookiesTable();
+            }
+        });
         FunctionMenu.add(cacheItem);
+        cacheItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableSelect.setCacheTable();
+            }
+        });
+        FunctionMenu.add(timelineItem);
+        timelineItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tableSelect.setTimelineTable();
+            }
+        });
+
     }
 }

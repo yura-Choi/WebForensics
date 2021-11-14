@@ -23,7 +23,7 @@ public class CacheDAO {
         return instance;
     }
 
-    private ArrayList<CacheDTO> records = new ArrayList<CacheDTO>();
+    public ArrayList<CacheDTO> records = new ArrayList<CacheDTO>();
 
     public ArrayList<CacheDTO> searchRecord(int days) throws IOException {
         try {
@@ -91,6 +91,7 @@ public class CacheDAO {
                 // cache data size
                 int file_size = convertHexToDec(entry_header, 0x2F, 0x2C);
                 cache.setData_size(String.valueOf(file_size));
+                cache.setId(Integer.toString(i+1));
 
                 records.add(cache);
             }

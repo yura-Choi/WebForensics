@@ -28,7 +28,7 @@ public class CookiesDAO {
         return instance;
     }
 
-    private ArrayList<CookiesDTO> records = new ArrayList<CookiesDTO>();
+    public ArrayList<CookiesDTO> records = new ArrayList<CookiesDTO>();
     private Connection conn = null;
     Statement stmt;
     Time time = Time.getInstance();
