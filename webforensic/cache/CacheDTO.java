@@ -5,8 +5,7 @@ public class CacheDTO {
     private String url;
     private String create_time;
     private String data_size; // This can become string array later.
-    private String data_name; // This can become string array or be deleted according to our decision.
-
+    private String data_type;
 
     public CacheDTO(){}
 
@@ -41,4 +40,8 @@ public class CacheDTO {
     public void setData_size(String data_size){
         this.data_size = data_size;
     }
+
+    public String getData_type() { return data_type; }
+
+    public void setData_type(String data_type) { this.data_type = data_type; }
 }
