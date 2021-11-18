@@ -5,6 +5,7 @@ import util.Time;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class CacheDAO {
@@ -32,9 +34,11 @@ public class CacheDAO {
             CopyFile copy = CopyFile.getInstance();
             copy.makeCache("data_0");
             copy.makeCache("data_1");
+            copy.makeCache("data_3");
 
             RandomAccessFile data_0 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_0", "r");
             RandomAccessFile data_1 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_1", "r");
+            RandomAccessFile data_3 = new RandomAccessFile("C:\\Users\\" + username + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\new_data_3", "r");
 
             Time time = Time.getInstance();
             String time_str = time.subDays(days);
@@ -49,7 +53,9 @@ public class CacheDAO {
             int[] entry_addr = new int[entry_count];
             for (int i = 0; i < entry_count; i++) {
                 data_0.read(index_block);
-                entry_addr[i] = getEntryOffset(index_block);
+                byte entry_hex_addr[] = Arrays.copyOfRange(index_block, 24, 28); // 24 ~ 27
+
+                entry_addr[i] = convertAddrToOffset(entry_hex_addr);
             }
 
             // parse each entry's data
@@ -91,13 +97,59 @@ public class CacheDAO {
                 // cache data size
                 int file_size = convertHexToDec(entry_header, 0x2F, 0x2C);
                 cache.setData_size(String.valueOf(file_size));
-                cache.setId(Integer.toString(i+1));
 
+                // get meta data
+                int metadata_size = convertHexToDec(entry_header, 0x2B, 0x28);
+                byte[] metadata = new byte[metadata_size];
+
+                byte[] metadata_addr = Arrays.copyOfRange(entry_header, 0x38, 0x3C); // 0x38 ~ 0x3B
+                int metadata_offset = convertAddrToOffset(metadata_addr);
+
+                data_3.seek(metadata_offset);
+                data_3.read(metadata);
+
+                // get meta data - content_type
+                int content_type_offset = indexOf(metadata, "content-type:".getBytes());
+                if(content_type_offset != -1){
+                    byte[] content_type = new byte[50];
+                    data_3.seek(metadata_offset + content_type_offset);
+                    data_3.read(content_type);
+
+                    int end_offset = indexOf(content_type, ";".getBytes());
+                    if(end_offset < 0x0D){
+                        end_offset = indexOf(content_type, new byte[1]);
+                    }
+                    byte[] content_type_byte = Arrays.copyOfRange(content_type, 0x0D, end_offset);
+                    String content_type_str = new String(content_type_byte, Charset.defaultCharset());
+
+                    cache.setData_type(content_type_str);
+                } else {
+                    cache.setData_type("unknown");
+                }
+
+                // get meta data - file_name
+                int file_name_offset = indexOf(metadata, "filename=".getBytes());
+                if(file_name_offset != -1){
+                    byte[] file_name = new byte[30];
+                    data_3.seek(metadata_offset + file_name_offset);
+                    data_3.read(file_name);
+
+                    int end_offset = indexOf(file_name, new byte[1]);
+                    byte[] file_name_byte = Arrays.copyOfRange(file_name, 0x09, end_offset);
+                    String file_name_str = new String(file_name_byte, Charset.defaultCharset());
+
+                    cache.setData_name(file_name_str);
+                } else {
+                    cache.setData_name("unknown");
+                }
+
+                cache.setId(Integer.toString(i+1));
                 records.add(cache);
             }
 
             data_0.close();
             data_1.close();
+            data_3.close();
         } catch(IOException | SQLException e) {
             e.printStackTrace();
         }
@@ -137,16 +189,12 @@ public class CacheDAO {
     }
 
     // convert cache address to offset in file(integer)
-    private static int getEntryOffset(byte[] index){
-        // 0x19(25), 0x18(24) index --> offset
-        // 0x20(16) index --> file number
-        // offset * block size + 0x2000(8192) --> offset
-
+    private static int convertAddrToOffset(byte[] hexAddr){
         int address = 8192;
-        int fileNum = index[26];
-        int offset = Byte.toUnsignedInt(index[25]);
+        int fileNum = hexAddr[2];
+        int offset = Byte.toUnsignedInt(hexAddr[1]);
         offset = offset << 8;
-        offset += Byte.toUnsignedInt(index[24]);
+        offset += Byte.toUnsignedInt(hexAddr[0]);
 
         if(fileNum == 1) address += offset * 256; // 0x100
         else if(fileNum == 2) address += offset * 1024; // 0x400
@@ -154,6 +202,21 @@ public class CacheDAO {
         else address = -1; // none..
 
         return address;
+    }
+
+    // get index of byte array in outer byte array
+    private int indexOf(byte[] outerArray, byte[] smallerArray) {
+        for(int i = 0; i < outerArray.length - smallerArray.length+1; ++i) {
+            boolean found = true;
+            for(int j = 0; j < smallerArray.length; ++j) {
+                if (outerArray[i+j] != smallerArray[j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) return i;
+        }
+        return -1;
     }
 
     public String getUrl(int idx){
