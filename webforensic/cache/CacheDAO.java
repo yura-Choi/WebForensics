@@ -157,13 +157,6 @@ public class CacheDAO {
         return records;
     }
 
-    String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder();
-        for(final byte b: a)
-            sb.append(String.format("%02x ", b&0xff));
-        return sb.toString();
-    }
-
     // convert hexdecimal address(length) to decimal address(length) (little endian ver.)
     private static int convertHexToDec(byte[] header, int start, int end) {
         int num = 0;
