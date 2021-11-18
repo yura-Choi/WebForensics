@@ -11,7 +11,7 @@ public class CacheTableModel extends AbstractTableModel {
 
     public static CacheTableModel getInstance() { return instance;}
 
-    private String[] columnNames = {"id", "url", "data type", "creation time", "file size(byte)"};
+    private String[] columnNames = {"id", "url", "data type", "creation time", "file name", "file size(byte)"};
     private ArrayList<CacheDTO> records;
 
     public String getColumnName(int column){
@@ -48,6 +48,9 @@ public class CacheTableModel extends AbstractTableModel {
                 result = to.getCreate_time();
                 break;
             case 4:
+                result = to.getData_name();
+                break;
+            case 5:
                 result = to.getData_size();
                 break;
         }

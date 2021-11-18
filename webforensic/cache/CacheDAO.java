@@ -98,7 +98,7 @@ public class CacheDAO {
                 int file_size = convertHexToDec(entry_header, 0x2F, 0x2C);
                 cache.setData_size(String.valueOf(file_size));
 
-                // get meta data - content_type
+                // get meta data
                 int metadata_size = convertHexToDec(entry_header, 0x2B, 0x28);
                 byte[] metadata = new byte[metadata_size];
 
@@ -108,17 +108,18 @@ public class CacheDAO {
                 data_3.seek(metadata_offset);
                 data_3.read(metadata);
 
+                // get meta data - content_type
                 int content_type_offset = indexOf(metadata, "content-type:".getBytes());
                 if(content_type_offset != -1){
                     byte[] content_type = new byte[50];
                     data_3.seek(metadata_offset + content_type_offset);
                     data_3.read(content_type);
 
-                    int endoffset = indexOf(content_type, ";".getBytes());
-                    if(endoffset < 0x0D){
-                        endoffset = indexOf(content_type, new byte[1]);
+                    int end_offset = indexOf(content_type, ";".getBytes());
+                    if(end_offset < 0x0D){
+                        end_offset = indexOf(content_type, new byte[1]);
                     }
-                    byte[] content_type_byte = Arrays.copyOfRange(content_type, 0x0D, endoffset);
+                    byte[] content_type_byte = Arrays.copyOfRange(content_type, 0x0D, end_offset);
                     String content_type_str = new String(content_type_byte, Charset.defaultCharset());
 
                     cache.setData_type(content_type_str);
@@ -126,7 +127,21 @@ public class CacheDAO {
                     cache.setData_type("unknown");
                 }
 
+                // get meta data - file_name
+                int file_name_offset = indexOf(metadata, "filename=".getBytes());
+                if(file_name_offset != -1){
+                    byte[] file_name = new byte[30];
+                    data_3.seek(metadata_offset + file_name_offset);
+                    data_3.read(file_name);
 
+                    int end_offset = indexOf(file_name, new byte[1]);
+                    byte[] file_name_byte = Arrays.copyOfRange(file_name, 0x09, end_offset);
+                    String file_name_str = new String(file_name_byte, Charset.defaultCharset());
+
+                    cache.setData_name(file_name_str);
+                } else {
+                    cache.setData_name("unknown");
+                }
 
                 cache.setId(Integer.toString(i+1));
                 records.add(cache);
