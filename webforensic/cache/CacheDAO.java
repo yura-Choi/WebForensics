@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CacheDAO {
     private static CacheDAO instance = new CacheDAO();
+
     private CacheDAO(){}
 
     public static CacheDAO getInstance(){
@@ -140,11 +141,27 @@ public class CacheDAO {
 
                     cache.setData_name(file_name_str);
                 } else {
-                    cache.setData_name("unknown");
-                }
+                    // parse file name from url
+                    String url_str = String.valueOf(url);
+                    int start_point = url_str.lastIndexOf("/") + 1;
+                    int end_point = 0;
+//                    url_str = url_str.substring(start_point);
+//                    j = url_str.indexOf(".");
+                    for (j = start_point; j < url_str.length(); j++) {
+                        if (url_str.charAt(j) == '?') break; // The end point is where the '?' is.
+                    }
+                    end_point = j;
+                    String filename_url = url_str.substring(start_point, end_point);
 
-                cache.setId(Integer.toString(i+1));
-                records.add(cache);
+                    if (!filename_url.contains(".") || filename_url.contains("search") || filename_url.contains("=")) {
+                        cache.setData_name("unknown");
+                    } else {
+                        cache.setData_name(filename_url);
+                    }
+
+                    cache.setId(Integer.toString(i + 1));
+                    records.add(cache);
+                }
             }
 
             data_0.close();
