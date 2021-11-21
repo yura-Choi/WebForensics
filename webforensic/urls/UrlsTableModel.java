@@ -24,6 +24,14 @@ public class UrlsTableModel extends AbstractTableModel {
         return instance;
     }
 
+    public static String[] getColumnNames() {
+        return columnNames;
+    }
+
+    public static void setColumnNames(String[] columnNames) {
+        UrlsTableModel.columnNames = columnNames;
+    }
+
     private static String[] columnNames = {"id", "url", "title", "visit_count", "typed_count", "last_visit_time", "hidden"};
     private ArrayList<UrlsDTO> records = new ArrayList<>();
 

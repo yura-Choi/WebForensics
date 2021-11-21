@@ -7,19 +7,26 @@ import timeline.TimelineTableModel;
 import urls.UrlsTableModel;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
 
 public class TableSelectionDemo extends JPanel {
 
     private static TableSelectionDemo instance = new TableSelectionDemo();
-    private TableSelectionDemo() {}
 
-    public static TableSelectionDemo getInstance(){
-        return instance;
+    private TableSelectionDemo() {
     }
 
+    public static TableSelectionDemo getInstance() {
+        return instance;
+    }
 
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +42,7 @@ public class TableSelectionDemo extends JPanel {
     public TableHeaderSorter tableHeaderSorter = TableHeaderSorter.getInstance();
     static BottomPane bottom;
 
-    void addComponentToPane(){
+    void addComponentToPane() {
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
         sorter.setModel(timelineTable_model);
@@ -53,11 +60,62 @@ public class TableSelectionDemo extends JPanel {
         setupTopPane();
     }
 
-    void setTimelineTable(){
+    void setTimelineTable() {
         sorter.setModel(timelineTable_model);
         timelineTable_model.fireTableDataChanged();
+        table.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int columnSize = table.getColumnCount();
+                int row = table.getSelectedRow();
+//                System.out.println(table.getSelectedRow());
+                String[] clicked = new String[columnSize];
+                for(int i = 0; i < columnSize;i++){
+                    clicked[i] = (String) table.getModel().getValueAt(row, i);
+                }
+//                System.out.println(Arrays.toString(clicked));
+                Dialog test = new Dialog(clicked);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+//
+//        JTable jt = new JTable(timelineTable_model);
+//        jt.addMouseListener((MouseListener) this);
+//
+//        sorter.setModel(jt);
 
 
+//        timelineTable_model
+//        timelineTable_model.addTableModelListener(new TableModelListener() {
+//            @Override
+//            public void tableChanged(TableModelEvent e) {
+//                int row = e.getFirstRow();
+//                System.out.println(row);
+//
+//                TimelineTableModel model = (TimelineTableModel) e.getSource();
+////                TableModel model = (TableModel) e.getSource();
+//                System.out.println(model.getColumnCount());
+//            }
+//        });
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -83,7 +141,7 @@ public class TableSelectionDemo extends JPanel {
          */
     }
 
-    void setUrlsTable(){
+    void setUrlsTable() {
         // urlsTable_model = UrlsTableModel.getInstance();
         // urlsTable_model.fireTableDataChanged();
 
@@ -118,22 +176,22 @@ public class TableSelectionDemo extends JPanel {
          */
     }
 
-    void setDownloadsTable(){
+    void setDownloadsTable() {
         sorter.setModel(downloadsTable_model);
         downloadsTable_model.fireTableDataChanged();
     }
 
-    void setCookiesTable(){
+    void setCookiesTable() {
         sorter.setModel(cookiesTable_model);
         cookiesTable_model.fireTableDataChanged();
     }
 
-    void setCacheTable(){
+    void setCacheTable() {
         sorter.setModel(cacheTable_model);
         cacheTable_model.fireTableDataChanged();
     }
 
-    void setupTopPane(){
+    void setupTopPane() {
 
         // Toolbar
         JToolBar mainToolBar = new JToolBar();
@@ -240,7 +298,7 @@ public class TableSelectionDemo extends JPanel {
         b.setMaximumSize(d);
     }
 
-    private void exitButtonActionPerformed(ActionEvent e){
+    private void exitButtonActionPerformed(ActionEvent e) {
         System.exit(0);
     }
 

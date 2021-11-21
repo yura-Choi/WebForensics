@@ -7,14 +7,18 @@ import cookies.CookiesDAO;
 import cookies.CookiesTableModel;
 import downloads.DownloadsDAO;
 import downloads.DownloadsTableModel;
+import gui.Dialog;
 import urls.UrlsDAO;
 import urls.UrlsTableModel;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TimelineTableModel extends AbstractTableModel{
+public class TimelineTableModel extends AbstractTableModel implements MouseListener{
 
     private static TimelineTableModel instance = new TimelineTableModel();
     private TimelineTableModel(){
@@ -72,5 +76,31 @@ public class TimelineTableModel extends AbstractTableModel{
                 break;
         }
         return result;
+    }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("sadfsafd");
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

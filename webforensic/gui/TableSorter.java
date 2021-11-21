@@ -3,10 +3,12 @@ package gui;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Date;
 import java.util.Vector;
 
-public class TableSorter extends TableMap implements TableModelListener{
+public class TableSorter extends TableMap implements TableModelListener {
     private static TableSorter instance = new TableSorter();
     private TableSorter(){}
 
