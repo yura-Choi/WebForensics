@@ -105,7 +105,14 @@ public class CacheDAO {
 
                 byte[] metadata_addr = Arrays.copyOfRange(entry_header, 0x38, 0x3C); // 0x38 ~ 0x3B
                 int metadata_offset = convertAddrToOffset(metadata_addr);
-
+                if(metadata_offset == -1){
+                    String filename = getFileNameFromURL(String.valueOf(url));
+                    cache.setData_name(filename);
+                    cache.setData_type("unknown");
+                    cache.setId(Integer.toString(i + 1));
+                    records.add(cache);
+                    continue;
+                }
                 data_3.seek(metadata_offset);
                 data_3.read(metadata);
 
@@ -142,26 +149,11 @@ public class CacheDAO {
                     cache.setData_name(file_name_str);
                 } else {
                     // parse file name from url
-                    String url_str = String.valueOf(url);
-                    int start_point = url_str.lastIndexOf("/") + 1;
-                    int end_point = 0;
-//                    url_str = url_str.substring(start_point);
-//                    j = url_str.indexOf(".");
-                    for (j = start_point; j < url_str.length(); j++) {
-                        if (url_str.charAt(j) == '?') break; // The end point is where the '?' is.
-                    }
-                    end_point = j;
-                    String filename_url = url_str.substring(start_point, end_point);
-
-                    if (!filename_url.contains(".") || filename_url.contains("search") || filename_url.contains("=")) {
-                        cache.setData_name("unknown");
-                    } else {
-                        cache.setData_name(filename_url);
-                    }
-
-                    cache.setId(Integer.toString(i + 1));
-                    records.add(cache);
+                    String filename = getFileNameFromURL(String.valueOf(url));
+                    cache.setData_name(filename);
                 }
+                cache.setId(Integer.toString(i + 1));
+                records.add(cache);
             }
 
             data_0.close();
@@ -172,6 +164,26 @@ public class CacheDAO {
         }
 
         return records;
+    }
+
+    // get filename from url string
+    private static String getFileNameFromURL(String url){
+        int start_point = url.lastIndexOf("/") + 1;
+        int end_point = url.length();
+        for (int j = start_point; j < url.length(); j++) {
+            if (url.charAt(j) == '?') {
+                end_point = j;
+                break; // The end point is where the '?' is.
+            }
+        }
+        String filename_url = url.substring(start_point, end_point);
+        String filename;
+        if (!filename_url.contains(".") || filename_url.contains("search") || filename_url.contains("=")) {
+            filename = "unknown";
+        } else {
+            filename = filename_url;
+        }
+        return filename;
     }
 
     // convert hexdecimal address(length) to decimal address(length) (little endian ver.)
