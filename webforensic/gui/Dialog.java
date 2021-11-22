@@ -19,18 +19,28 @@ public class Dialog extends JDialog {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         int row;
+        String[] names = null;
+        String[] searched_detail = null;
+
         if(input[1].equals("urls")){
             row = UrlsTableModel.getInstance().getColumnCount();
-            UrlsTableModel.getColumnNames();
+            names = UrlsTableModel.getColumnNames();
+            searched_detail = UrlsTableModel.getInstance().detail(input[2], input[3]);
         }
         else if(input[1].equals("cookies")){
             row = CookiesTableModel.getInstance().getColumnCount();
+            names = CookiesTableModel.getColumnNames();
+            searched_detail = CookiesTableModel.getInstance().detail(input[2], input[3]);
         }
         else if(input[1].equals("downloads")){
             row = DownloadsTableModel.getInstance().getColumnCount();
+            names = DownloadsTableModel.getColumnNames();
+            searched_detail = DownloadsTableModel.getInstance().detail(input[2], input[3]);
         }
         else {
             row = CacheTableModel.getInstance().getColumnCount();
+            names = CacheTableModel.getInstance().getColumnNames();
+            searched_detail = CacheTableModel.getInstance().detail(input[2], input[3]);
         }
 
         for(int i=0;i<row;i++){
@@ -38,12 +48,17 @@ public class Dialog extends JDialog {
             gbc.gridy = i;
             gbc.gridwidth = 1;
             gbc.gridheight = 1;
-            add(new TextField("test"), gbc);
+            add(new TextField(names[i]), gbc);
+            gbc.gridx = 1;
+            gbc.gridy = i;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+            add(new TextField(searched_detail[i]), gbc);
         }
 
 //        add(tf);
 //        add(okButton);
-        setSize(1000,1000);
+        setSize(700,500);
         setVisible(true);
 
         okButton.addActionListener(new ActionListener() {
