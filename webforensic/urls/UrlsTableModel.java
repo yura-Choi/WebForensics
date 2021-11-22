@@ -82,6 +82,48 @@ public class UrlsTableModel extends AbstractTableModel {
         }
         return result;
     }
+
+    public String[] detail(String url, String date){
+        int i;
+        for(i=0;i<records.size();i++){
+            if(url.equals(records.get(i).getUrl()) && date.equals(records.get(i).getLast_visit_time())){
+                break;
+            }
+        }
+        int column = columnNames.length;
+        String[] ret = new String[column];
+        for(int j=0; j<column;j++){
+            String result = null;
+            UrlsDTO to = records.get(i);
+            switch (j) {
+                case 0:
+                    result = to.getId();
+                    break;
+                case 1:
+                    result = to.getUrl();
+                    break;
+                case 2:
+                    result = to.getTitle();
+                    break;
+                case 3:
+                    result = to.getVisit_count();
+                    break;
+                case 4:
+                    result = to.getTyped_count();
+                    break;
+                case 5:
+                    result = to.getLast_visit_time();
+                    break;
+                case 6:
+                    result = to.getHidden();
+                    break;
+            }
+
+            ret[j] = result;
+        }
+
+        return ret;
+    }
 }
 
 

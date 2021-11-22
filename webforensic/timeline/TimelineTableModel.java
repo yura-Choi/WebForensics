@@ -18,7 +18,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TimelineTableModel extends AbstractTableModel implements MouseListener{
+public class TimelineTableModel extends AbstractTableModel{
 
     private static TimelineTableModel instance = new TimelineTableModel();
     private TimelineTableModel(){
@@ -76,31 +76,5 @@ public class TimelineTableModel extends AbstractTableModel implements MouseListe
                 break;
         }
         return result;
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println("sadfsafd");
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }
