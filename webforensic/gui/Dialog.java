@@ -48,12 +48,18 @@ public class Dialog extends JDialog {
             gbc.gridy = i;
             gbc.gridwidth = 1;
             gbc.gridheight = 1;
-            add(new TextField(names[i]), gbc);
+            gbc.fill = GridBagConstraints.VERTICAL;
+            gbc.weightx = 2;
+
+            add(new JLabel(names[i]), gbc);
             gbc.gridx = 1;
             gbc.gridy = i;
             gbc.gridwidth = 1;
-            gbc.gridheight = 1;
-            add(new TextField(searched_detail[i]), gbc);
+            gbc.gridheight = 1;;
+            gbc.fill = GridBagConstraints.VERTICAL;
+            gbc.weightx = 8;
+
+            add(new JLabel(searched_detail[i]), gbc);
         }
 
 //        add(tf);
