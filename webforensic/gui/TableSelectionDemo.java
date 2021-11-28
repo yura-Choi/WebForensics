@@ -74,7 +74,22 @@ public class TableSelectionDemo extends JPanel {
                     clicked[i] = (String) table.getModel().getValueAt(row, i);
                 }
 //                System.out.println(Arrays.toString(clicked));
-                Dialog test = new Dialog(clicked);
+                JDialog test = new JDialog();
+//                Dialog test = new Dialog();
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                //test.add();
+//                test.setLayout(new GridBagLayout());
+                test.getContentPane().setLayout(new GridBagLayout());
+//                test.setContentPane(show(clicked));
+                test.getContentPane().add(show(clicked), gbc);
+//                test.add(show(clicked));
+//                test.setSize(700,500);
+                test.setVisible(true);
+                test.pack();
+
             }
 
             @Override
@@ -302,4 +317,57 @@ public class TableSelectionDemo extends JPanel {
         System.exit(0);
     }
 
+
+    public JPanel show(String[] input){
+        JPanel pan = new JPanel();
+        pan.setLayout(new GridBagLayout());
+//        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        int row;
+        String[] header = {"type","data"};
+        String[] names = null;
+        String[] searched_detail = null;
+
+        if(input[1].equals("urls")){
+            row = UrlsTableModel.getInstance().getColumnCount();
+            names = UrlsTableModel.getColumnNames();
+            searched_detail = UrlsTableModel.getInstance().detail(input[2], input[3]);
+        }
+        else if(input[1].equals("cookies")){
+            row = CookiesTableModel.getInstance().getColumnCount();
+            names = CookiesTableModel.getColumnNames();
+            searched_detail = CookiesTableModel.getInstance().detail(input[2], input[3]);
+        }
+        else if(input[1].equals("downloads")){
+            row = DownloadsTableModel.getInstance().getColumnCount();
+            names = DownloadsTableModel.getColumnNames();
+            searched_detail = DownloadsTableModel.getInstance().detail(input[2], input[3]);
+        }
+        else {
+            row = CacheTableModel.getInstance().getColumnCount();
+            names = CacheTableModel.getInstance().getColumnNames();
+            searched_detail = CacheTableModel.getInstance().detail(input[2], input[3]);
+        }
+
+        for(int i=0;i<row;i++){
+            gbc.gridx = 0;
+            gbc.gridy = i;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+            gbc.fill = GridBagConstraints.VERTICAL;
+            gbc.weightx = 2;
+
+            pan.add(new JLabel(names[i]), gbc);
+            gbc.gridx = 1;
+            gbc.gridy = i;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;;
+            gbc.fill = GridBagConstraints.VERTICAL;
+            gbc.weightx = 8;
+
+            pan.add(new JLabel(searched_detail[i]), gbc);
+        }
+
+        return pan;
+    }
 }
