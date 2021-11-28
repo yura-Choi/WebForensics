@@ -88,7 +88,9 @@ public class TableSelectionDemo extends JPanel {
                 test.getContentPane().add(show(clicked), gbc);
 //                test.add(show(clicked));
 //                test.setSize(700,500);
+                test.setLocation(e.getX(),e.getY());
                 test.setVisible(true);
+
                 test.pack();
 
             }
