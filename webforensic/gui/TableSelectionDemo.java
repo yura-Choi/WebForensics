@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TableSelectionDemo extends JPanel {
@@ -349,25 +350,75 @@ public class TableSelectionDemo extends JPanel {
             searched_detail = CacheTableModel.getInstance().detail(input[2], input[3]);
         }
 
-        for(int i=0;i<row;i++){
-            gbc.gridx = 0;
-            gbc.gridy = i;
-            gbc.gridwidth = 1;
-            gbc.gridheight = 1;
-            gbc.fill = GridBagConstraints.VERTICAL;
-            gbc.weightx = 2;
+        int bonus = 0;
+        for(int i=0;i<row + bonus;i++) {
+            if (searched_detail[i - bonus].length() > 100) {
+                ArrayList<String> seperate = Seperate(searched_detail[i - bonus]);
+                for(int j=0; j < seperate.size(); j++){
+                    i++;
+                    bonus++;
+                    gbc.gridx = 0;
+                    gbc.gridy = i;
+                    gbc.gridwidth = 1;
+                    gbc.gridheight = 1;
+                    gbc.fill = GridBagConstraints.VERTICAL;
+                    gbc.weightx = 2;
+                    if(j == 0){
+                        pan.add(new JLabel(names[i - bonus]), gbc);
+                    }
+                    else {
+                        pan.add(new JLabel(""), gbc);
+                    }
+                    gbc.gridx = 1;
+                    gbc.gridy = i;
+                    gbc.gridwidth = 1;
+                    gbc.gridheight = 1;
+                    gbc.fill = GridBagConstraints.VERTICAL;
+                    gbc.weightx = 8;
+                    pan.add(new JLabel(seperate.get(j)), gbc);
 
-            pan.add(new JLabel(names[i]), gbc);
-            gbc.gridx = 1;
-            gbc.gridy = i;
-            gbc.gridwidth = 1;
-            gbc.gridheight = 1;;
-            gbc.fill = GridBagConstraints.VERTICAL;
-            gbc.weightx = 8;
+                }
 
-            pan.add(new JLabel(searched_detail[i]), gbc);
+
+            } else {
+                gbc.gridx = 0;
+                gbc.gridy = i;
+                gbc.gridwidth = 1;
+                gbc.gridheight = 1;
+                gbc.fill = GridBagConstraints.VERTICAL;
+                gbc.weightx = 2;
+                pan.add(new JLabel(names[i - bonus]), gbc);
+
+                gbc.gridx = 1;
+                gbc.gridy = i;
+                gbc.gridwidth = 1;
+                gbc.gridheight = 1;
+                gbc.fill = GridBagConstraints.VERTICAL;
+                gbc.weightx = 8;
+                pan.add(new JLabel(searched_detail[i - bonus]), gbc);
+
+            }
+        }
+        return pan;
+    }
+
+    public ArrayList<String> Seperate(String bigOne){
+        ArrayList<String> ret = new ArrayList<String>();
+
+        int size = 100;
+        int count = 0;
+        for(int max = bigOne.length(); max > 0; max -= size){
+//            System.out.printf("count %d\n", count);
+            if((count+1)*size > bigOne.length()){
+                ret.add(bigOne.substring(count*size));
+            }
+            else{
+                ret.add(bigOne.substring(count*size, (count+1)*size));
+            }
+            count++;
         }
 
-        return pan;
+//        System.out.printf("seperate end\n");
+        return ret;
     }
 }
