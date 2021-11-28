@@ -7,10 +7,14 @@ import cookies.CookiesDAO;
 import cookies.CookiesTableModel;
 import downloads.DownloadsDAO;
 import downloads.DownloadsTableModel;
+import gui.Dialog;
 import urls.UrlsDAO;
 import urls.UrlsTableModel;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
