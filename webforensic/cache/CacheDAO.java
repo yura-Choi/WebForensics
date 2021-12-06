@@ -138,7 +138,7 @@ public class CacheDAO {
                 // get meta data - file_name
                 int file_name_offset = indexOf(metadata, "filename=".getBytes());
                 if(file_name_offset != -1){
-                    byte[] file_name = new byte[30];
+                    byte[] file_name = new byte[metadata.length];
                     data_3.seek(metadata_offset + file_name_offset);
                     data_3.read(file_name);
 
