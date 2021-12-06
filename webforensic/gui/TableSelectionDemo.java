@@ -61,79 +61,39 @@ public class TableSelectionDemo extends JPanel {
         setupTopPane();
     }
 
+    void setDetailDialog(MouseEvent e){
+        int columnSize = table.getColumnCount();
+        int row = table.getSelectedRow();
+//                System.out.println(table.getSelectedRow());
+        String[] clicked = new String[columnSize];
+        for(int i = 0; i < columnSize;i++){
+            clicked[i] = (String) table.getModel().getValueAt(row, i);
+        }
+//                System.out.println(Arrays.toString(clicked));
+        JDialog test = new JDialog();
+//                Dialog test = new Dialog();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        //test.add();
+//                test.setLayout(new GridBagLayout());
+        test.getContentPane().setLayout(new GridBagLayout());
+//                test.setContentPane(show(clicked));
+        test.getContentPane().add(show(clicked), gbc);
+//                test.add(show(clicked));
+//                test.setSize(700,500);
+        test.setLocation(e.getX(),e.getY());
+        test.setVisible(true);
+
+        test.pack();
+    }
+
     void setTimelineTable() {
         sorter.setModel(timelineTable_model);
         timelineTable_model.fireTableDataChanged();
-        table.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int columnSize = table.getColumnCount();
-                int row = table.getSelectedRow();
-//                System.out.println(table.getSelectedRow());
-                String[] clicked = new String[columnSize];
-                for(int i = 0; i < columnSize;i++){
-                    clicked[i] = (String) table.getModel().getValueAt(row, i);
-                }
-//                System.out.println(Arrays.toString(clicked));
-                JDialog test = new JDialog();
-//                Dialog test = new Dialog();
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-                //test.add();
-//                test.setLayout(new GridBagLayout());
-                test.getContentPane().setLayout(new GridBagLayout());
-//                test.setContentPane(show(clicked));
-                test.getContentPane().add(show(clicked), gbc);
-//                test.add(show(clicked));
-//                test.setSize(700,500);
-                test.setLocation(e.getX(),e.getY());
-                test.setVisible(true);
-
-                test.pack();
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-//
-//        JTable jt = new JTable(timelineTable_model);
-//        jt.addMouseListener((MouseListener) this);
-//
-//        sorter.setModel(jt);
 
 
-//        timelineTable_model
-//        timelineTable_model.addTableModelListener(new TableModelListener() {
-//            @Override
-//            public void tableChanged(TableModelEvent e) {
-//                int row = e.getFirstRow();
-//                System.out.println(row);
-//
-//                TimelineTableModel model = (TimelineTableModel) e.getSource();
-////                TableModel model = (TableModel) e.getSource();
-//                System.out.println(model.getColumnCount());
-//            }
-//        });
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
         table.getColumnModel().getColumn(0).setPreferredWidth(10);

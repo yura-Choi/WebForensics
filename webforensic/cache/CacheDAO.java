@@ -119,7 +119,7 @@ public class CacheDAO {
                 // get meta data - content_type
                 int content_type_offset = indexOf(metadata, "content-type:".getBytes());
                 if(content_type_offset != -1){
-                    byte[] content_type = new byte[50];
+                    byte[] content_type = new byte[100];
                     data_3.seek(metadata_offset + content_type_offset);
                     data_3.read(content_type);
 

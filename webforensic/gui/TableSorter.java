@@ -26,6 +26,7 @@ public class TableSorter extends TableMap implements TableModelListener {
         fireTableDataChanged();
     }
 
+
     public int compareRowsByColumn(int row1, int row2, int column) {
         Class type = model.getColumnClass(column);
         TableModel data = model;
