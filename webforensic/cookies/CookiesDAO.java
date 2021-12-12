@@ -34,8 +34,8 @@ public class CookiesDAO {
     Time time = Time.getInstance();
 
     public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
-        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\cookies");
-        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies");
+        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\network\\cookies");
+        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\network\\new_cookies");
 
         try {
             Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -44,7 +44,7 @@ public class CookiesDAO {
         }
 
         //db 연결 정보
-        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies";
+        String url = "jdbc:sqlite:" + System.getenv("USERPROFILE") + "\\AppData\\Local\\google\\chrome\\user data\\default\\network\\new_cookies";
 
         //db 연결 정보
         CopyFile copy = CopyFile.getInstance();

