@@ -7,16 +7,11 @@ import timeline.TimelineTableModel;
 import urls.UrlsTableModel;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TableSelectionDemo extends JPanel {
 
@@ -46,12 +41,10 @@ public class TableSelectionDemo extends JPanel {
     void addComponentToPane() {
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
-        sorter.setModel(timelineTable_model);
+        setTimelineTable();
         tableHeaderSorter.install(sorter, table);
         table.setShowGrid(false);
-
-        // setTimelineTable();
-
+        // table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 
         bottom = new BottomPane();
         bottom.init(table.getRowCount());
@@ -64,25 +57,17 @@ public class TableSelectionDemo extends JPanel {
     void setDetailDialog(MouseEvent e){
         int columnSize = table.getColumnCount();
         int row = table.getSelectedRow();
-//                System.out.println(table.getSelectedRow());
         String[] clicked = new String[columnSize];
         for(int i = 0; i < columnSize;i++){
             clicked[i] = (String) table.getModel().getValueAt(row, i);
         }
-//                System.out.println(Arrays.toString(clicked));
         JDialog test = new JDialog();
-//                Dialog test = new Dialog();
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        //test.add();
-//                test.setLayout(new GridBagLayout());
         test.getContentPane().setLayout(new GridBagLayout());
-//                test.setContentPane(show(clicked));
         test.getContentPane().add(show(clicked), gbc);
-//                test.add(show(clicked));
-//                test.setSize(700,500);
         test.setLocation(e.getXOnScreen(),e.getYOnScreen());
         test.setVisible(true);
 
@@ -92,8 +77,10 @@ public class TableSelectionDemo extends JPanel {
     void setTimelineTable() {
         sorter.setModel(timelineTable_model);
         timelineTable_model.fireTableDataChanged();
-
-
+//        table.getColumnModel().getColumn(0).setPreferredWidth(10);
+//        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+//        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+//        table.getColumnModel().getColumn(3).setPreferredWidth(10);
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
         table.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -117,6 +104,7 @@ public class TableSelectionDemo extends JPanel {
 //        table.getColumnModel().getColumn(17).setPreferredWidth(10);
         table.getTableHeader().setReorderingAllowed(false);
          */
+
     }
 
     void setUrlsTable() {
@@ -284,7 +272,6 @@ public class TableSelectionDemo extends JPanel {
     public JPanel show(String[] input){
         JPanel pan = new JPanel();
         pan.setLayout(new GridBagLayout());
-//        setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         int row;
         String[] header = {"type","data"};
