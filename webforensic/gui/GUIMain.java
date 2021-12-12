@@ -30,7 +30,7 @@ public class GUIMain {
 
         mainFrame.setVisible(true);
 
-        String days = (String)JOptionPane.showInputDialog(newContentPane, "items from the last xx days", "Advanced Options",
+        String days = (String)JOptionPane.showInputDialog(newContentPane, "items from the last xx days", "Period Setting",
                 JOptionPane.PLAIN_MESSAGE, null, null, "10");
 
         try{
