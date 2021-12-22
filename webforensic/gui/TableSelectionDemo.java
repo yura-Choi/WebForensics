@@ -49,7 +49,7 @@ public class TableSelectionDemo extends JPanel {
         bottom = new BottomPane();
         bottom.init(table.getRowCount());
         bottom.setBackground(Color.WHITE);
-        add(bottom, BorderLayout.PAGE_END);
+        // add(bottom, BorderLayout.PAGE_END);
 
         setupTopPane();
     }
