@@ -38,5 +38,7 @@ public class GUIMain {
         }catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+
+        newContentPane.bottom.updateItemsCount(newContentPane.timelineTable_model.getRowCount());
     }
 }

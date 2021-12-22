@@ -9,17 +9,24 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("Serial")
 public class BottomPane extends JPanel implements ActionListener {
 
+    private static BottomPane instance = new BottomPane();
+    private BottomPane() {
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        itemCnt = new JTextField("0 item(s)", 20);
+//        itemCnt.setMinimumSize(new Dimension(40, 16));
+//        itemCnt.setMaximumSize(new Dimension(200, 16));
+        itemCnt.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        add(itemCnt);
+    }
+    public static BottomPane getInstance(){ return instance; }
+
     JTextField itemCnt;
     int columnCount, selectedCnt;
 
-    void init(int columnCount){
-        setLayout(new FlowLayout(FlowLayout.LEFT));
-
+    void updateItemsCount(int columnCount){
         this.columnCount = columnCount;
-        itemCnt = new JTextField(columnCount+ "item(s)");
-        itemCnt.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        add(itemCnt);
-
+        String s = columnCount + " item(s)";
+        itemCnt.setText(s);
         selectedCnt = 0;
     }
     /*

@@ -36,20 +36,18 @@ public class TableSelectionDemo extends JPanel {
     public TimelineTableModel timelineTable_model = TimelineTableModel.getInstance();
 
     public TableHeaderSorter tableHeaderSorter = TableHeaderSorter.getInstance();
-    static BottomPane bottom;
+    public BottomPane bottom = BottomPane.getInstance();
 
     void addComponentToPane() {
         JScrollPane center = new JScrollPane(table);
         add(center, BorderLayout.CENTER);
+
+        bottom.setBackground(Color.WHITE);
+        add(bottom, BorderLayout.PAGE_END);
+
         setTimelineTable();
         tableHeaderSorter.install(sorter, table);
         table.setShowGrid(false);
-        // table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-
-        bottom = new BottomPane();
-        bottom.init(table.getRowCount());
-        bottom.setBackground(Color.WHITE);
-        // add(bottom, BorderLayout.PAGE_END);
 
         setupTopPane();
     }
@@ -77,6 +75,9 @@ public class TableSelectionDemo extends JPanel {
     void setTimelineTable() {
         sorter.setModel(timelineTable_model);
         timelineTable_model.fireTableDataChanged();
+        bottom.updateItemsCount(table.getRowCount());
+
+        // bottom.updateItemsCount(timelineTable_model.getRowCount());
 //        table.getColumnModel().getColumn(0).setPreferredWidth(10);
 //        table.getColumnModel().getColumn(1).setPreferredWidth(200);
 //        table.getColumnModel().getColumn(2).setPreferredWidth(200);
@@ -116,6 +117,7 @@ public class TableSelectionDemo extends JPanel {
 
         sorter.setModel(urlsTable_model);
         urlsTable_model.fireTableDataChanged();
+        bottom.updateItemsCount(table.getRowCount());
 
         //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         /*
@@ -145,16 +147,19 @@ public class TableSelectionDemo extends JPanel {
     void setDownloadsTable() {
         sorter.setModel(downloadsTable_model);
         downloadsTable_model.fireTableDataChanged();
+        bottom.updateItemsCount(table.getRowCount());
     }
 
     void setCookiesTable() {
         sorter.setModel(cookiesTable_model);
         cookiesTable_model.fireTableDataChanged();
+        bottom.updateItemsCount(table.getRowCount());
     }
 
     void setCacheTable() {
         sorter.setModel(cacheTable_model);
         cacheTable_model.fireTableDataChanged();
+        bottom.updateItemsCount(table.getRowCount());
     }
 
     void setupTopPane() {

@@ -19,6 +19,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Base64.Decoder;
 
 public class CookiesDAO {
     private static CookiesDAO instance = new CookiesDAO();
@@ -100,10 +101,19 @@ public class CookiesDAO {
         return records;
     }
 
+    public static String byteArrayToHexaString(byte[] bytes)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (byte data : bytes) {
+            builder.append(String.format("%02X ", data));
+        }
+        return builder.toString();
+    }
+
+
     public String decrypted (byte[] encryptedValue){
         byte[] nonce = Arrays.copyOfRange(encryptedValue, 3, 3 + 12);
-        byte[] ciphertextTag = Arrays.copyOfRange(encryptedValue, 3 + 12,
-                encryptedValue.length);
+        byte[] ciphertextTag = Arrays.copyOfRange(encryptedValue, 3 + 12, encryptedValue.length);
         byte[] decryptedBytes = null;
 
         byte[] windowsMasterKey;
@@ -138,6 +148,7 @@ public class CookiesDAO {
         // Decrypt and store the master key for use later
         windowsMasterKey = Crypt32Util.cryptUnprotectData(encryptedMasterKey);
 
+
         // Decrypt
         try {
             Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -152,6 +163,8 @@ public class CookiesDAO {
             throw new IllegalStateException("Error decrypting", e);
         }
 
+
+        // System.out.println(byteArrayToHexaString(windowsMasterKey) + " " + new String(decryptedBytes));
         return new String(decryptedBytes);
     }
 
