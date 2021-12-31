@@ -41,9 +41,33 @@ public class Filter extends JFrame implements ActionListener {
         selectAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //if allchecked is true, set everything unchecked
+                //else all check
+//                if(selectAll.isSelected() == false){
+//                    return;
+//                }
+
+                //checking allchecked
+                Boolean allChecked = true;
                 for(int i=0; i < check.length; i++){
-                    
+                    if(check[i].isSelected() == false){
+                        allChecked = false;
+                        break;
+                    }
                 }
+
+                //change depend on allchecked
+                if(allChecked == true){
+                    for(int i=0; i < check.length; i++) {
+                        check[i].setSelected(false);
+                    }
+                }
+                else{
+                    for(int i=0; i < check.length; i++) {
+                        check[i].setSelected(true);
+                    }
+                }
+
             }
         });
         add(selectAll);
@@ -54,7 +78,14 @@ public class Filter extends JFrame implements ActionListener {
             if(i == check.length){
                 button = new JButton("Apply");
                 button.setBounds(80, 100 + 30*i, 80, 20);
-                button.addActionListener(this);
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        setVisible(false);
+
+                        return;
+                    }
+                });
                 add(button);
 
                 break;
@@ -64,6 +95,7 @@ public class Filter extends JFrame implements ActionListener {
             check[i].setText("test" + i);
             check[i].setBounds(80, 100 + 30*i, 80, 20);
 
+            check[i].addActionListener(this);
             add(check[i]);
         }
         setSize(500, 500);
@@ -73,8 +105,9 @@ public class Filter extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(button.isSelected()){
-            setVisible(false);
+        if(selectAll.isSelected()){
+            selectAll.setSelected(false);
+            //setVisible(false);
 
             return;
         }
