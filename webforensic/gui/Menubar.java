@@ -17,6 +17,7 @@ public class Menubar extends JMenuBar {
     JMenu editMenu = new JMenu("Edit");
 
     JMenu viewMenu = new JMenu("View");
+    JMenuItem filterItem = new JMenuItem("Filter");
 
     JMenu optionsMenu = new JMenu("Options");
 
@@ -44,6 +45,14 @@ public class Menubar extends JMenuBar {
 
         this.add(editMenu);
         this.add(viewMenu);
+        viewMenu.add(filterItem);
+        filterItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Filter("url");
+            }
+        });
+
         this.add(optionsMenu);
         this.add(helpMenu);
 
