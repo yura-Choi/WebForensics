@@ -18,6 +18,10 @@ public class Menubar extends JMenuBar {
 
     JMenu viewMenu = new JMenu("View");
     JMenuItem filterItem = new JMenuItem("Filter");
+    Filter url = new Filter("url");
+    Filter download = new Filter("download");
+    Filter cookie = new Filter("cookie");
+    Filter cache = new Filter("cache");
 
     JMenu optionsMenu = new JMenu("Options");
 
@@ -49,7 +53,7 @@ public class Menubar extends JMenuBar {
         filterItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Filter("url");
+                url.turnOn();
             }
         });
 
