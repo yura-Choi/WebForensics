@@ -2,11 +2,9 @@ package cookies;
 
 import util.Time;
 import com.sun.jna.platform.win32.Crypt32Util;
-import netscape.javascript.JSObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import urls.UrlsDTO;
 import util.CopyFile;
 
 import javax.crypto.Cipher;
@@ -19,7 +17,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Base64.Decoder;
 
 public class CookiesDAO {
     private static CookiesDAO instance = new CookiesDAO();
@@ -34,9 +31,25 @@ public class CookiesDAO {
     Statement stmt;
     Time time = Time.getInstance();
 
-    public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException{
-        File file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\network\\cookies");
-        File Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\network\\new_cookies");
+    public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException, IOException, ParseException {
+        String pathLocalState = System.getProperty("user.home") + "/AppData/Local/Google/Chrome/User Data/Local State";
+        Reader reader = new FileReader(pathLocalState);
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject)parser.parse(reader);
+
+        String localState_user_experience_metrics = jsonObject.get("user_experience_metrics").toString();
+        String localState_stability = ((JSONObject)parser.parse(localState_user_experience_metrics)).get("stability").toString();
+        String localState_stats_version = ((JSONObject)parser.parse(localState_stability)).get("stats_version").toString();
+        String version = localState_stats_version.substring(0, localState_stats_version.indexOf("."));
+
+        File file, Nfile;
+        if(Integer.parseInt(version) >= 96){
+            file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\network\\cookies");
+            Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\network\\new_cookies");
+        } else {
+            file = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\cookies");
+            Nfile = new File(System.getenv("USERPROFILE")+"\\AppData\\Local\\google\\chrome\\user data\\default\\new_cookies");
+        }
 
         try {
             Files.copy(file.toPath(), Nfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -55,25 +68,19 @@ public class CookiesDAO {
         try{
             conn = DriverManager.getConnection(url);
             stmt = conn.createStatement();
-//            String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies WHERE name = 'SSID'";
             String sql = "SELECT creation_utc, top_frame_site_key, host_key, name, value, encrypted_value, path, expires_utc, is_secure, is_httponly, last_access_utc, has_expires, is_persistent, priority, samesite, source_scheme, source_port, is_same_party FROM cookies where last_access_utc >= " + time.subDays(period);
 
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
                 CookiesDTO record = new CookiesDTO();
-//                System.out.println(rs.getString(1));
-//                System.out.println(time.printDate(rs.getString(1)));
                 record.setCreation_utc(time.printDate(rs.getString(1)));
                 record.setTop_frame_site_key(rs.getString(2));
-//                System.out.println(rs.getString(3));
                 record.setHost_key(rs.getString(3));
                 record.setName(rs.getString(4));
                 record.setValue(rs.getString(5));
                 record.setEncrypted_value(decrypted(rs.getBytes(6)));
                 record.setPath(rs.getString(7));
-//                System.out.println(rs.getString(8));
-//                System.out.println(time.printDate(rs.getString(8)));
                 record.setExpires_utc(time.printDate(rs.getString(8)));
                 record.setIs_secure(rs.getInt(9));
                 record.setIs_httponly(rs.getInt(10));
@@ -101,16 +108,6 @@ public class CookiesDAO {
         return records;
     }
 
-    public static String byteArrayToHexaString(byte[] bytes)
-    {
-        StringBuilder builder = new StringBuilder();
-        for (byte data : bytes) {
-            builder.append(String.format("%02X ", data));
-        }
-        return builder.toString();
-    }
-
-
     public String decrypted (byte[] encryptedValue){
         byte[] nonce = Arrays.copyOfRange(encryptedValue, 3, 3 + 12);
         byte[] ciphertextTag = Arrays.copyOfRange(encryptedValue, 3 + 12, encryptedValue.length);
@@ -118,7 +115,6 @@ public class CookiesDAO {
 
         byte[] windowsMasterKey;
         String pathLocalState = System.getProperty("user.home") + "/AppData/Local/Google/Chrome/User Data/Local State";
-        File localStateFile = new File(pathLocalState);
 
         // json 데이터 추출
         JSONParser parser = new JSONParser();
@@ -163,8 +159,6 @@ public class CookiesDAO {
             throw new IllegalStateException("Error decrypting", e);
         }
 
-
-        // System.out.println(byteArrayToHexaString(windowsMasterKey) + " " + new String(decryptedBytes));
         return new String(decryptedBytes);
     }
 

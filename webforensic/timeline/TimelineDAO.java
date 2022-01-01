@@ -1,13 +1,12 @@
 package timeline;
 
-import base.*;
 import cache.CacheDAO;
 import cookies.CookiesDAO;
 import downloads.DownloadsDAO;
+import org.json.simple.parser.ParseException;
 import urls.*;
 import util.Time;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,11 +37,13 @@ public class TimelineDAO{
             cacheDAO.searchRecord(days);
             downloadsDAO.searchRecord(days);
             cookieDAO.searchRecord(days);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
