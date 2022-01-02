@@ -1,6 +1,7 @@
 package downloads;
 
 import cookies.CookiesDTO;
+import gui.TableSelectionDemo;
 
 import javax.swing.table.AbstractTableModel;
 import java.sql.SQLException;
@@ -47,14 +48,29 @@ public class DownloadsTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount(){
-        return columnNames.length;
-    }
+        int column_n=0;
+        for(int i=0; i < columnNames.length; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(1)[i] == true){
+                column_n++;
+            }
+        }
 
+        return column_n;
+    }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex){
+        int filter = 0;
+        int max = columnIndex;
+        for(int i=0; i < max + 1; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(1)[i] == false){
+                filter++;
+                max++;
+            }
+        }
+
         Object result = null;
         DownloadsDTO to = records.get(rowIndex);
-        switch (columnIndex) {
+        switch (columnIndex + filter) {
             case 0:
                 result = to.getId();
                 break;

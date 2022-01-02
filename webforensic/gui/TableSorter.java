@@ -10,20 +10,25 @@ import java.util.Vector;
 
 public class TableSorter extends TableMap implements TableModelListener {
     private static TableSorter instance = new TableSorter();
-    private TableSorter(){}
 
-    public static TableSorter getInstance() { return instance; }
+    private TableSorter() {
+    }
+
+    public static TableSorter getInstance() {
+        return instance;
+    }
 
     int indexes[] = new int[0];
     Vector sortingColumns = new Vector();
     boolean ascending = true;
-
+    public String current_table;
 
     public void setModel(TableModel model) {
         super.setModel(model);
         reallocateIndexes();
         sortByColumn(0);
         fireTableDataChanged();
+        current_table = model.getClass().getName();
     }
 
 
@@ -63,8 +68,8 @@ public class TableSorter extends TableMap implements TableModelListener {
 
             int sz1 = s1.length();
             int sz2 = s2.length();
-            if(sz1 != sz2){
-                if(sz1 < sz2) return -1;
+            if (sz1 != sz2) {
+                if (sz1 < sz2) return -1;
                 else return 1;
             }
 
@@ -108,8 +113,8 @@ public class TableSorter extends TableMap implements TableModelListener {
 
             int sz1 = s1.length();
             int sz2 = s2.length();
-            if(sz1 != sz2){
-                if(sz1 < sz2) return -1;
+            if (sz1 != sz2) {
+                if (sz1 < sz2) return -1;
                 else return 1;
             }
 
@@ -240,7 +245,37 @@ class TableMap extends AbstractTableModel implements TableModelListener {
     }
 
     public String getColumnName(int column) {
-        return model.getColumnName(column);
+        int filter = 0;
+        int max = column;
+        for (int i = 0; i < max + 1; i++) {
+            String current = TableSorter.getInstance().current_table;
+//                System.out.printf(current);
+            if (current.equals("urls.UrlsTableModel")) {
+                if (TableSelectionDemo.getInstance().filter_On.get(0)[i] == false) {
+                    filter++;
+                    max++;
+                }
+            }
+            if (current.equals("downloads.DownloadsTableModel")) {
+                if (TableSelectionDemo.getInstance().filter_On.get(1)[i] == false) {
+                    filter++;
+                    max++;
+                }
+            }
+            if (current.equals("cookies.CookiesTableModel")) {
+                if (TableSelectionDemo.getInstance().filter_On.get(2)[i] == false) {
+                    filter++;
+                    max++;
+                }
+            }
+            if (current.equals("cache.CacheTableModel")) {
+                if (TableSelectionDemo.getInstance().filter_On.get(3)[i] == false) {
+                    filter++;
+                    max++;
+                }
+            }
+        }
+        return model.getColumnName(column + filter);
     }
 
     public int getRowCount() {

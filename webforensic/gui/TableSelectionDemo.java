@@ -19,13 +19,13 @@ public class TableSelectionDemo extends JPanel {
     private static TableSelectionDemo instance = new TableSelectionDemo();
 
     private TableSelectionDemo() {
-        filter_On.add(new boolean[urlsTable_model.getColumnCount()]);
+        filter_On.add(new boolean[urlsTable_model.getColumnNames().length]);
         Arrays.fill(filter_On.get(0), true);
-        filter_On.add(new boolean[downloadsTable_model.getColumnCount()]);
+        filter_On.add(new boolean[downloadsTable_model.getColumnNames().length]);
         Arrays.fill(filter_On.get(1), true);
-        filter_On.add(new boolean[cookiesTable_model.getColumnCount()]);
+        filter_On.add(new boolean[cookiesTable_model.getColumnNames().length]);
         Arrays.fill(filter_On.get(2), true);
-        filter_On.add(new boolean[cacheTable_model.getColumnCount()]);
+        filter_On.add(new boolean[cacheTable_model.getColumnNames().length]);
         Arrays.fill(filter_On.get(3), true);
     }
 

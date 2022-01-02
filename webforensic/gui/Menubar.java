@@ -1,5 +1,7 @@
 package gui;
 
+import urls.UrlsTableModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,7 +55,20 @@ public class Menubar extends JMenuBar {
         filterItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                url.turnOn();
+                String current = TableSorter.getInstance().current_table;
+//                System.out.printf(current);
+                if(current.equals("urls.UrlsTableModel")){
+                    url.turnOn();
+                }
+                if(current.equals("downloads.DownloadsTableModel")){
+                    download.turnOn();
+                }
+                if(current.equals("cookies.CookiesTableModel")){
+                    cookie.turnOn();
+                }
+                if(current.equals("cache.CacheTableModel")){
+                    cache.turnOn();
+                }
             }
         });
 

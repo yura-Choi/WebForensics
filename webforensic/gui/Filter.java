@@ -27,19 +27,20 @@ public class Filter extends JFrame implements ActionListener {
         this.tableName = now;
 
         if(now.equals("url")){
-            check = new JCheckBox[urlsTable_model.getColumnCount()];
+            check = new JCheckBox[urlsTable_model.getColumnNames().length];
         }
         if(now.equals("download")){
-            check = new JCheckBox[downloadsTable_model.getColumnCount()];
+            check = new JCheckBox[downloadsTable_model.getColumnNames().length];
         }
         if(now.equals("cookie")){
-            check = new JCheckBox[cookiesTable_model.getColumnCount()];
+            check = new JCheckBox[cookiesTable_model.getColumnNames().length];
         }
         if(now.equals("cache")){
-            check = new JCheckBox[cacheTable_model.getColumnCount()];
+            check = new JCheckBox[cacheTable_model.getColumnNames().length];
         }
 
         selectAll = new JCheckBox("Select All");
+        selectAll.setSelected(true);
         selectAll.setBounds(50, 60, 80, 20);
         selectAll.addActionListener(new ActionListener() {
             @Override
@@ -83,6 +84,24 @@ public class Filter extends JFrame implements ActionListener {
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        //아무것도 선택 안하면 아래 경고창 띄우고 종료
+                        boolean selectSomeThing = false;
+                        for (int i=0; i < check.length; i++){
+                            if(check[i].isSelected() == true){
+                                selectSomeThing = true;
+                                break;
+                            }
+                        }
+                        if(selectSomeThing == false){
+                            JLabel warning = new JLabel("Select Some Thing!!!");
+                            warning.setBounds(80, 100 + 30*check.length + 50, 300, 20);
+                            add(warning);
+                            setVisible(false);
+                            setVisible(true);
+
+                            return;
+                        }
+
                         setVisible(false);
                         boolean[] update = new boolean[check.length];
                         for(int i=0; i < check.length; i++){
@@ -91,15 +110,19 @@ public class Filter extends JFrame implements ActionListener {
 
                         if(tableName.equals("url")){
                             TableSelectionDemo.getInstance().filter_On.set(0, update);
+                            UrlsTableModel.getInstance().fireTableDataChanged();
                         }
                         if(tableName.equals("download")){
                             TableSelectionDemo.getInstance().filter_On.set(1, update);
+                            DownloadsTableModel.getInstance().fireTableDataChanged();
                         }
                         if(tableName.equals("cookie")){
                             TableSelectionDemo.getInstance().filter_On.set(2, update);
+                            CookiesTableModel.getInstance().fireTableDataChanged();
                         }
                         if(tableName.equals("cache")){
                             TableSelectionDemo.getInstance().filter_On.set(3, update);
+                            CacheTableModel.getInstance().fireTableDataChanged();
                         }
 
                         return;
@@ -125,7 +148,7 @@ public class Filter extends JFrame implements ActionListener {
 
 //            check[i].setText("test" + i);
             check[i].setBounds(80, 100 + 30*i, 300, 20);
-
+            check[i].setSelected(true);
             check[i].addActionListener(this);
             add(check[i]);
         }
