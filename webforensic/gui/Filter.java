@@ -165,9 +165,21 @@ public class Filter extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(selectAll.isSelected()){
             selectAll.setSelected(false);
-            //setVisible(false);
 
             return;
+        }
+        if(selectAll.isSelected() == false){
+            boolean all = true;
+            for(int i=0; i < check.length; i++){
+                if(check[i].isSelected() == false){
+                    all = false;
+                    break;
+                }
+            }
+
+            if(all == true){
+                selectAll.setSelected(true);
+            }
         }
     }
 }
