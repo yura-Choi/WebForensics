@@ -52,7 +52,7 @@ public class Time {
 //        conn.close();
 
         long time = Long.valueOf(date+"000");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.util.Date date2 = new Date();
         date2.setTime(time);
 
@@ -79,6 +79,12 @@ public class Time {
     }
 
     public String printDate(String date) throws SQLException {
+        if(date.equals("13285778693219857")){
+            System.out.println("2022 test");
+        }
+        if(date.equals("13285425063241048")){
+            System.out.println("2022 test");
+        }
         return isDateZero(datetoDefault(chromeToUNIX(date)));
     }
 }
