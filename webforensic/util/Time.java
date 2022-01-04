@@ -79,12 +79,6 @@ public class Time {
     }
 
     public String printDate(String date) throws SQLException {
-        if(date.equals("13285778693219857")){
-            System.out.println("2022 test");
-        }
-        if(date.equals("13285425063241048")){
-            System.out.println("2022 test");
-        }
         return isDateZero(datetoDefault(chromeToUNIX(date)));
     }
 }
