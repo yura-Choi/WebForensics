@@ -52,7 +52,7 @@ public class Time {
 //        conn.close();
 
         long time = Long.valueOf(date+"000");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.util.Date date2 = new Date();
         date2.setTime(time);
 

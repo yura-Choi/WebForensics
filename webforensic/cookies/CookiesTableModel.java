@@ -1,5 +1,6 @@
 package cookies;
 
+import gui.TableSelectionDemo;
 import urls.UrlsDAO;
 import urls.UrlsDTO;
 
@@ -44,14 +45,30 @@ public class CookiesTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return columnNames.length;
+        int column_n=0;
+        for(int i=0; i < columnNames.length; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(2)[i] == true){
+                column_n++;
+            }
+        }
+
+        return column_n;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        int filter = 0;
+        int max = columnIndex;
+        for(int i=0; i < max + 1; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(2)[i] == false){
+                filter++;
+                max++;
+            }
+        }
+
         Object result = null;
         CookiesDTO to = records.get(rowIndex);
-        switch (columnIndex) {
+        switch (columnIndex + filter) {
             case 0:
                 result = to.getCreation_utc();
                 break;

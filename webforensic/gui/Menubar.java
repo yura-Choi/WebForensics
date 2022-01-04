@@ -1,5 +1,7 @@
 package gui;
 
+import urls.UrlsTableModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +19,11 @@ public class Menubar extends JMenuBar {
     JMenu editMenu = new JMenu("Edit");
 
     JMenu viewMenu = new JMenu("View");
+    JMenuItem filterItem = new JMenuItem("Filter");
+    Filter url = new Filter("url");
+    Filter download = new Filter("download");
+    Filter cookie = new Filter("cookie");
+    Filter cache = new Filter("cache");
 
     JMenu optionsMenu = new JMenu("Options");
 
@@ -44,6 +51,27 @@ public class Menubar extends JMenuBar {
 
         this.add(editMenu);
         this.add(viewMenu);
+        viewMenu.add(filterItem);
+        filterItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String current = TableSorter.getInstance().current_table;
+//                System.out.printf(current);
+                if(current.equals("urls.UrlsTableModel")){
+                    url.turnOn();
+                }
+                if(current.equals("downloads.DownloadsTableModel")){
+                    download.turnOn();
+                }
+                if(current.equals("cookies.CookiesTableModel")){
+                    cookie.turnOn();
+                }
+                if(current.equals("cache.CacheTableModel")){
+                    cache.turnOn();
+                }
+            }
+        });
+
         this.add(optionsMenu);
         this.add(helpMenu);
 

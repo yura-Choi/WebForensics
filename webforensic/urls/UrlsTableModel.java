@@ -1,5 +1,7 @@
 package urls;
 
+import gui.TableSelectionDemo;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -17,16 +19,13 @@ public class UrlsTableModel extends AbstractTableModel {
 
     private static UrlsTableModel instance = new UrlsTableModel();
     private UrlsTableModel(){
-
     }
 
     public static UrlsTableModel getInstance(){
         return instance;
     }
 
-    public static String[] getColumnNames() {
-        return columnNames;
-    }
+    public static String[] getColumnNames() { return columnNames;}
 
     public static void setColumnNames(String[] columnNames) {
         UrlsTableModel.columnNames = columnNames;
@@ -44,20 +43,39 @@ public class UrlsTableModel extends AbstractTableModel {
     }
 
     @Override
-    public int getRowCount(){
-        return records.size();
-    }
+    public int getRowCount(){ return records.size(); }
 
     @Override
     public int getColumnCount(){
-        return columnNames.length;
+        int column_n=0;
+        for(int i=0; i < columnNames.length; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(0)[i] == true){
+                column_n++;
+            }
+        }
+
+        return column_n;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex){
+//        for_filter = TableSelectionDemo.getInstance();
+//        if(for_filter.filter_On.get(0)[columnIndex] == false){
+//            return null;
+//        }
+
+        int filter = 0;
+        int max = columnIndex;
+        for(int i=0; i < max + 1; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(0)[i] == false){
+                filter++;
+                max++;
+            }
+        }
+
         Object result = null;
         UrlsDTO to = records.get(rowIndex);
-        switch (columnIndex) {
+        switch (columnIndex + filter) {
             case 0:
                 result = to.getId();
                 break;

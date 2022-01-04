@@ -1,6 +1,7 @@
 package cache;
 
 import cookies.CookiesDTO;
+import gui.TableSelectionDemo;
 import urls.UrlsDTO;
 
 import javax.swing.table.AbstractTableModel;
@@ -38,14 +39,29 @@ public class CacheTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount(){
-        return columnNames.length;
+        int column_n=0;
+        for(int i=0; i < columnNames.length; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(3)[i] == true){
+                column_n++;
+            }
+        }
+        return column_n;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex){
+        int filter = 0;
+        int max = columnIndex;
+        for(int i=0; i < max + 1; i++){
+            if(TableSelectionDemo.getInstance().filter_On.get(3)[i] == false){
+                filter++;
+                max++;
+            }
+        }
+
         String result = "";
         CacheDTO to = records.get(rowIndex);
-        switch (columnIndex) {
+        switch (columnIndex +filter) {
             case 0:
                 result = to.getId();
                 break;

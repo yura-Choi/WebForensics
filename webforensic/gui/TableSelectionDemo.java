@@ -12,12 +12,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TableSelectionDemo extends JPanel {
 
     private static TableSelectionDemo instance = new TableSelectionDemo();
 
     private TableSelectionDemo() {
+        filter_On.add(new boolean[urlsTable_model.getColumnNames().length]);
+        Arrays.fill(filter_On.get(0), true);
+        filter_On.add(new boolean[downloadsTable_model.getColumnNames().length]);
+        Arrays.fill(filter_On.get(1), true);
+        filter_On.add(new boolean[cookiesTable_model.getColumnNames().length]);
+        Arrays.fill(filter_On.get(2), true);
+        filter_On.add(new boolean[cacheTable_model.getColumnNames().length]);
+        Arrays.fill(filter_On.get(3), true);
     }
 
     public static TableSelectionDemo getInstance() {
@@ -37,6 +46,8 @@ public class TableSelectionDemo extends JPanel {
 
     public TableHeaderSorter tableHeaderSorter = TableHeaderSorter.getInstance();
     public BottomPane bottom = BottomPane.getInstance();
+
+    public ArrayList<boolean[]> filter_On = new ArrayList<boolean[]>();
 
     void addComponentToPane() {
         JScrollPane center = new JScrollPane(table);
