@@ -6,7 +6,6 @@ import timeline.TimelineTableModel;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -30,12 +29,6 @@ public class TableHeaderSorter extends MouseAdapter {
         table.addMouseListener(instance);
     }
 
-    public static void changeTable(TableModel tableModel, TableColumnModel columnModel) {
-        instance.table.setColumnModel(columnModel);
-        instance.sorter.setModel(tableModel);
-        // JTableHeader tableHeader = instance.table.getTableHeader();
-    }
-
     public void mouseClicked(MouseEvent mouseEvent) {
         TableColumnModel columnModel = table.getColumnModel();
         int viewColumn = columnModel.getColumnIndexAtX(mouseEvent.getX());
@@ -52,8 +45,6 @@ public class TableHeaderSorter extends MouseAdapter {
 
             else {
                 if (column != -1 && clickCount >= 2) {
-                    // System.out.println("Sorting ...");
-                    //int shiftPressed = (mouseEvent.getModifiers() & InputEvent.SHIFT_MASK);
                     ascending = !ascending;
                     sorter.sortByColumn(column, ascending);
                 }

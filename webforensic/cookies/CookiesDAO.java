@@ -1,5 +1,6 @@
 package cookies;
 
+import cipher.AES_GCM;
 import util.Time;
 import com.sun.jna.platform.win32.Crypt32Util;
 import org.json.simple.JSONObject;
@@ -30,6 +31,7 @@ public class CookiesDAO {
     private Connection conn = null;
     Statement stmt;
     Time time = Time.getInstance();
+    AES_GCM aes_gcm = new AES_GCM();
 
     public ArrayList<CookiesDTO> searchRecord(int period) throws ClassNotFoundException, SQLException, IOException, ParseException {
         String pathLocalState = System.getProperty("user.home") + "/AppData/Local/Google/Chrome/User Data/Local State";
@@ -111,7 +113,7 @@ public class CookiesDAO {
     public String decrypted (byte[] encryptedValue){
         byte[] nonce = Arrays.copyOfRange(encryptedValue, 3, 3 + 12);
         byte[] ciphertextTag = Arrays.copyOfRange(encryptedValue, 3 + 12, encryptedValue.length);
-        byte[] decryptedBytes = null;
+        byte[] decryptedBytes = new byte[encryptedValue.length - 3 - 12 - 16];
 
         byte[] windowsMasterKey;
         String pathLocalState = System.getProperty("user.home") + "/AppData/Local/Google/Chrome/User Data/Local State";
@@ -144,20 +146,22 @@ public class CookiesDAO {
         // Decrypt and store the master key for use later
         windowsMasterKey = Crypt32Util.cryptUnprotectData(encryptedMasterKey);
 
+        aes_gcm.AES_GCM_Decryption(decryptedBytes, ciphertextTag, ciphertextTag.length, 16, nonce, nonce.length, null, 0, windowsMasterKey);
 
-        // Decrypt
-        try {
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 
-            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, nonce);
-            SecretKeySpec keySpec = new SecretKeySpec(windowsMasterKey, "AES");
-
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec);
-            decryptedBytes = cipher.doFinal(ciphertextTag);
-        }
-        catch (Exception e) {
-            throw new IllegalStateException("Error decrypting", e);
-        }
+//        // Decrypt
+//        try {
+//            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+//
+//            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, nonce);
+//            SecretKeySpec keySpec = new SecretKeySpec(windowsMasterKey, "AES");
+//
+//            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec);
+//            decryptedBytes = cipher.doFinal(ciphertextTag);
+//        }
+//        catch (Exception e) {
+//            throw new IllegalStateException("Error decrypting", e);
+//        }
 
         return new String(decryptedBytes);
     }

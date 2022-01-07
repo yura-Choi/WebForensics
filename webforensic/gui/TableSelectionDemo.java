@@ -87,72 +87,12 @@ public class TableSelectionDemo extends JPanel {
         sorter.setModel(timelineTable_model);
         timelineTable_model.fireTableDataChanged();
         bottom.updateItemsCount(table.getRowCount());
-
-        // bottom.updateItemsCount(timelineTable_model.getRowCount());
-//        table.getColumnModel().getColumn(0).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-//        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-//        table.getColumnModel().getColumn(3).setPreferredWidth(10);
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        /*
-        table.getColumnModel().getColumn(0).setPreferredWidth(10);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(3).setPreferredWidth(10);
-        table.getColumnModel().getColumn(4).setPreferredWidth(10);
-        table.getColumnModel().getColumn(5).setPreferredWidth(200);
-        table.getColumnModel().getColumn(6).setPreferredWidth(10);
-//        if(type())
-//        table.getColumnModel().getColumn(7).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(8).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(9).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(10).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(11).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(12).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(13).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(14).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(15).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(16).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(17).setPreferredWidth(10);
-        table.getTableHeader().setReorderingAllowed(false);
-         */
-
     }
 
     void setUrlsTable() {
-        // urlsTable_model = UrlsTableModel.getInstance();
-        // urlsTable_model.fireTableDataChanged();
-
-        // sorter.setModel(urlsTable_model);
-        //table.setColumnModel(urlsTableColumnModel);
-
         sorter.setModel(urlsTable_model);
         urlsTable_model.fireTableDataChanged();
         bottom.updateItemsCount(table.getRowCount());
-
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        /*
-        table.getColumnModel().getColumn(0).setPreferredWidth(10);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        table.getColumnModel().getColumn(3).setPreferredWidth(10);
-        table.getColumnModel().getColumn(4).setPreferredWidth(10);
-        table.getColumnModel().getColumn(5).setPreferredWidth(200);
-        table.getColumnModel().getColumn(6).setPreferredWidth(10);
-//        if(type())
-//        table.getColumnModel().getColumn(7).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(8).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(9).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(10).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(11).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(12).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(13).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(14).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(15).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(16).setPreferredWidth(10);
-//        table.getColumnModel().getColumn(17).setPreferredWidth(10);
-        table.getTableHeader().setReorderingAllowed(false);
-         */
     }
 
     void setDownloadsTable() {
