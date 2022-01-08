@@ -142,26 +142,14 @@ public class CookiesDAO {
         // Remove prefix (DPAPI)
         byte[] encryptedMasterKeyWithPrefix = Base64.getDecoder().decode(encryptedMasterKeyWithPrefixB64);
         byte[] encryptedMasterKey = Arrays.copyOfRange(encryptedMasterKeyWithPrefix, 5, encryptedMasterKeyWithPrefix.length);
+        System.out.println(encryptedMasterKey.length);
 
         // Decrypt and store the master key for use later
         windowsMasterKey = Crypt32Util.cryptUnprotectData(encryptedMasterKey);
+        System.out.println(windowsMasterKey.length);
 
         aes_gcm.AES_GCM_Decryption(decryptedBytes, ciphertextTag, ciphertextTag.length, 16, nonce, nonce.length, null, 0, windowsMasterKey);
 
-
-//        // Decrypt
-//        try {
-//            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-//
-//            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, nonce);
-//            SecretKeySpec keySpec = new SecretKeySpec(windowsMasterKey, "AES");
-//
-//            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec);
-//            decryptedBytes = cipher.doFinal(ciphertextTag);
-//        }
-//        catch (Exception e) {
-//            throw new IllegalStateException("Error decrypting", e);
-//        }
 
         return new String(decryptedBytes);
     }
